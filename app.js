@@ -1,158 +1,211 @@
 const DAY = 86400000;
 const cityLabels={chiangmai:'清迈',sukhothai:'素可泰',chiangrai:'清莱',bangkok:'曼谷',ayutthaya:'大城'};
 const typeColors={core:'#176052',optional:'#d8872c',food:'#b84835',drink:'#76513b',indoor:'#386b8a',transport:'#645a87'};
+const typeLabels={core:'核心',food:'餐饮',drink:'咖啡',indoor:'雨天',transport:'交通',optional:'可选'};
+
 const places=[
-  {id:'wat-phra-singh',city:'chiangmai',name:'Wat Phra Singh 帕辛寺',lat:18.788586,lng:98.98201,type:'core',desc:'LP 重点选择。清迈最受尊崇的寺庙之一，兰纳木构与金色装饰的代表。'},
-  {id:'wat-chedi-luang',city:'chiangmai',name:'Wat Chedi Luang 契迪龙寺',lat:18.786988,lng:98.98652,type:'core',desc:'LP 重点选择。15 世纪巨型佛塔遗迹，傍晚气氛最好。'},
-  {id:'wat-phan-tao',city:'chiangmai',name:'Wat Phan Tao 潘道寺',lat:18.787662,lng:98.987814,type:'core',desc:'深色柚木大殿紧邻契迪龙寺，是老城步行线自然的一站。'},
-  {id:'lanna-museum',city:'chiangmai',name:'Lanna Folklife Museum',lat:18.790191,lng:98.988039,type:'indoor',desc:'理解兰纳建筑、宗教与日常生活的室内备选；下雨时优先。'},
-  {id:'warorot',city:'chiangmai',name:'Talat Warorot 瓦洛洛市场',lat:18.790557,lng:99.000582,type:'core',desc:'LP 重点选择。香肠、猪皮、辣椒酱、干货和本地生活混合的老市场。'},
-  {id:'monks-trail',city:'chiangmai',name:"Monk's Trail 起点",lat:18.79608,lng:98.95131,type:'optional',desc:'到 Wat Pha Lat 约 45–60 分钟；雨后石面和土路湿滑时取消。'},
-  {id:'wat-pha-lat',city:'chiangmai',name:'Wat Pha Lat 帕拉寺',lat:18.79865,lng:98.93415,type:'core',desc:'LP 评为隐藏寺庙亮点。山林、石阶、小瀑布构成安静的半山空间。'},
-  {id:'doi-suthep',city:'chiangmai',name:'Wat Phra That Doi Suthep 双龙寺',lat:18.80485,lng:98.92157,type:'core',desc:'清迈最重要的山寺与城市观景点；低云时观景价值下降，但寺庙本身仍值得。'},
-  {id:'wat-umong',city:'chiangmai',name:'Wat Umong 悟孟寺',lat:18.78302,lng:98.95233,type:'optional',desc:'林中隧道寺庙，适合与 Wat Pha Lat/Baan Kang Wat 组合。'},
-  {id:'baan-kang-wat',city:'chiangmai',name:'Baan Kang Wat 艺术村',lat:18.78578,lng:98.95249,type:'optional',desc:'小型工作室、陶艺、咖啡与树荫庭院；中雨时比山路更稳。'},
-  {id:'ang-kaew',city:'chiangmai',name:'Ang Kaew Reservoir 安娇湖',lat:18.80507,lng:98.95218,type:'core',desc:'清迈大学山脚下的湖与环湖步道。这里适合傍晚散步，不需要把大学当成十分钟拍照点；如遇校方分流，按 Visit CMU 或现场接驳要求进入。'},
-  {id:'cmu-art-center',city:'chiangmai',name:'CMU Art Center 清迈大学艺术中心',lat:18.79522,lng:98.96842,type:'indoor',desc:'清迈大学文化艺术中心一带的展览空间，可和宁曼、安娇湖组成雨天也能走的半日。具体展览与开放时间临近复查。'},
-  {id:'ristr8to',city:'chiangmai',name:'Ristr8to Original',lat:18.79936,lng:98.96815,type:'drink',desc:'宁曼代表性的专业咖啡店，适合真正想喝咖啡时去；名气大也意味着排队，没必要为了它在门口耗掉一小时。'},
-  {id:'one-nimman',city:'chiangmai',name:'One Nimman & Nimman Soi',lat:18.80078,lng:98.96839,type:'optional',desc:'不是必须打卡的商场，而是把咖啡、晚饭和下雨后的随意散步集中在一个片区。'},
-  {id:'doi-inthanon',city:'chiangmai',name:'Doi Inthanon 茵他侬山',lat:18.5887,lng:98.48606,type:'optional',desc:'泰国最高峰。雨季瀑布与苔藓最好，但 Kew Mae Pan 通常关闭，能见度不保证。'},
-  {id:'wachirathan',city:'chiangmai',name:'Wachirathan Waterfall',lat:18.5414,lng:98.5995,type:'optional',desc:'雨季水量大、飞沫强；防滑鞋和防水袋比雨伞更实用。'},
-  {id:'sp-chicken',city:'chiangmai',name:'SP Chicken',lat:18.78756,lng:98.981516,type:'food',desc:'LP 重点餐厅，帕辛寺附近的烤鸡与 Isan 配菜。'},
-  {id:'khao-soi-lamduan',city:'chiangmai',name:'Khao Soi Lam Duan',lat:18.801567,lng:99.005442,type:'food',desc:'LP 重点选择，Warorot 以北的传统咖喱面。'},
-  {id:'north-gate-jazz',city:'chiangmai',name:'North Gate Jazz Co-Op',lat:18.795154,lng:98.986922,type:'core',desc:'LP 重点夜生活；早到更容易有位置。'},
+  {id:'wat-phra-singh',city:'chiangmai',name:'Wat Phra Singh 帕辛寺',lat:18.788586,lng:98.98201,type:'core',desc:'清迈最受尊崇的寺庙之一。老城步行日从这里开始，能先看懂兰纳木构、金色装饰和城市信仰。'},
+  {id:'wat-chedi-luang',city:'chiangmai',name:'Wat Chedi Luang 契迪龙寺',lat:18.786988,lng:98.98652,type:'core',desc:'15 世纪巨型佛塔遗迹。它的残缺尺度比一座修得完整的寺庙更能让人记住。'},
+  {id:'wat-phan-tao',city:'chiangmai',name:'Wat Phan Tao 潘道寺',lat:18.787662,lng:98.987814,type:'core',desc:'深色柚木大殿紧邻契迪龙寺。只停十几分钟，也能让老城这一段的材质变化变得很清楚。'},
+  {id:'lanna-museum',city:'chiangmai',name:'Lanna Folklife Museum 兰纳民俗馆',lat:18.790191,lng:98.988039,type:'indoor',desc:'把寺庙里看见的建筑、信仰和日常器物重新串起来。热或下雨时比继续赶寺庙更合适。'},
+  {id:'warorot',city:'chiangmai',name:'Talat Warorot 瓦洛洛市场',lat:18.790557,lng:99.000582,type:'core',desc:'老市场里的香肠、猪皮、辣椒酱、布料和家用品混在一起，清迈从古城走回日常生活就在这里。'},
+  {id:'monks-trail',city:'chiangmai',name:"Monk's Trail 起点",lat:18.79608,lng:98.95131,type:'optional',desc:'到 Wat Pha Lat 通常约 45–60 分钟。雨后石面和土路湿滑时，我们直接改坐红车。'},
+  {id:'wat-pha-lat',city:'chiangmai',name:'Wat Pha Lat 帕拉寺',lat:18.79865,lng:98.93415,type:'core',desc:'半山上的林寺，石阶、那伽和水声把空间藏进树林里。这里值得慢，不值得冒雨硬走。'},
+  {id:'doi-suthep',city:'chiangmai',name:'Wat Phra That Doi Suthep 双龙寺',lat:18.80485,lng:98.92157,type:'core',desc:'清迈最重要的山寺。低云会拿走城市远景，却拿不走金色佛塔、回廊和香火。'},
+  {id:'wat-umong',city:'chiangmai',name:'Wat Umong 悟孟寺',lat:18.78302,lng:98.95233,type:'optional',desc:'林中的隧道寺庙。它和手作社区只能二选一，留给当天体力和雨势决定。'},
+  {id:'baan-kang-wat',city:'chiangmai',name:'Baan Kang Wat 艺术村',lat:18.78578,lng:98.95249,type:'optional',desc:'小型工作室、陶艺、咖啡和树荫庭院。我们来这里是为了松下来，不是收集每一家店。'},
+  {id:'ang-kaew',city:'chiangmai',name:'Ang Kaew Reservoir 安娇湖',lat:18.80507,lng:98.95218,type:'core',desc:'清迈大学山脚下的湖和环湖步道。我把它留在傍晚，好让喝完咖啡以后还有一段不需要完成任务的路。'},
+  {id:'cmu-art-center',city:'chiangmai',name:'CMU Art Center 清迈大学艺术中心',lat:18.79522,lng:98.96842,type:'indoor',desc:'宁曼和校园之间的展览空间。具体展览临近出发再看，雨天可以自然接住半个下午。'},
+  {id:'ristr8to',city:'chiangmai',name:'Ristr8to Original',lat:18.79936,lng:98.96815,type:'drink',desc:'宁曼代表性的专业咖啡店。想喝就去，排队太长就换附近独立店，不让一个店名绑住下午。'},
+  {id:'one-nimman',city:'chiangmai',name:'One Nimman 与宁曼小巷',lat:18.80078,lng:98.96839,type:'optional',desc:'咖啡、晚饭和雨后散步都能留在这一小圈。它更像收尾位置，不是必须打卡的商场。'},
+  {id:'doi-inthanon',city:'chiangmai',name:'Doi Inthanon 茵他侬山',lat:18.5887,lng:98.48606,type:'optional',desc:'泰国最高峰。雨季苔藓和瀑布状态好，能见度却无法保证，只能当晴天分支。'},
+  {id:'wachirathan',city:'chiangmai',name:'Wachirathan Waterfall',lat:18.5414,lng:98.5995,type:'optional',desc:'雨季水量和飞沫都很强。防滑鞋与防水袋比雨伞更有用。'},
+  {id:'sp-chicken',city:'chiangmai',name:'SP Chicken',lat:18.78756,lng:98.981516,type:'food',desc:'帕辛寺附近的烤鸡和 Isan 配菜，适合把老城上午收得简单。'},
+  {id:'khao-soi-lamduan',city:'chiangmai',name:'Khao Soi Lam Duan',lat:18.801567,lng:99.005442,type:'food',desc:'Warorot 以北的传统咖喱面。营业状态临近出发复核。'},
+  {id:'north-gate-jazz',city:'chiangmai',name:'North Gate Jazz Co-Op',lat:18.795154,lng:98.986922,type:'core',desc:'老城北门边的现场爵士。早到比较容易站得舒服，太累就把它留给另一个晚上。'},
   {id:'white-temple',city:'chiangrai',name:'Wat Rong Khun 白庙',lat:19.82419,lng:99.76313,type:'core',desc:'当代艺术家 Chalermchai Kositpipat 持续建造的白色寺庙艺术工程。'},
   {id:'blue-temple',city:'chiangrai',name:'Wat Rong Suea Ten 蓝庙',lat:19.92346,lng:99.84172,type:'core',desc:'蓝金色室内外视觉强烈，适合清迈抵达清莱后的傍晚。'},
   {id:'baan-dam',city:'chiangrai',name:'Baan Dam 黑屋博物馆',lat:19.99225,lng:99.86053,type:'optional',desc:'Thawan Duchanee 的黑色建筑与艺术集合，和白庙构成鲜明对照。'},
   {id:'clock-tower',city:'chiangrai',name:'Chiang Rai Clock Tower',lat:19.90701,lng:99.83067,type:'optional',desc:'市中心晚间落点，周围便于吃饭与住宿。'},
   {id:'cei',city:'chiangrai',name:'Chiang Rai Airport CEI',lat:19.95234,lng:99.88293,type:'transport',desc:'清莱备选路线从这里直飞曼谷，避免返回清迈。'},
-  {id:'sukhothai-mahathat',city:'sukhothai',name:'Wat Mahathat 素可泰玛哈泰寺',lat:17.01694,lng:99.70314,type:'core',desc:'素可泰历史公园的中心。莲花苞式主塔、佛像和水面在傍晚形成这趟路线里最安静的一段。'},
-  {id:'wat-sa-si',city:'sukhothai',name:'Wat Sa Si 沙西寺',lat:17.01972,lng:99.69936,type:'core',desc:'建在池中小岛上的佛塔与行走佛，适合日落前骑车停留，而不是正午匆匆拍照。'},
-  {id:'wat-si-chum',city:'sukhothai',name:'Wat Si Chum 西春寺',lat:17.02677,lng:99.69362,type:'core',desc:'狭窄佛殿中坐着巨大的 Phra Achana 佛像，尺度与空间感和清迈、曼谷寺庙都不同。'},
-  {id:'sukhothai-cafe',city:'sukhothai',name:'Cafe Thammada',lat:17.01779,lng:99.70491,type:'drink',desc:'历史公园入口附近的小型艺术咖啡馆。近期中文游记反复提到它适合作为骑行后的冷气与冰饮停靠点；当天营业状态仍需复查。'},
-  {id:'ths',city:'sukhothai',name:'Sukhothai Airport THS',lat:17.23804,lng:99.81818,type:'transport',desc:'素可泰开口路线的关键。当前时刻表显示 PG214 约 17:50 飞往 BKK，给上午骑行留下空间；出票前必须重新确认。'},
-  {id:'grand-palace',city:'bangkok',name:'Grand Palace & Wat Phra Kaew',lat:13.75002,lng:100.49129,type:'core',desc:'曼谷王城主轴。官方 2026 信息：08:30–16:30，售票至 15:30，外国游客 500 THB。'},
-  {id:'wat-pho',city:'bangkok',name:'Wat Pho 卧佛寺',lat:13.746553,lng:100.49334,type:'core',desc:'LP 评为曼谷最值得的核心寺庙之一；卧佛、佛塔与传统医药/按摩历史并重。'},
-  {id:'wat-arun',city:'bangkok',name:'Wat Arun 郑王庙',lat:13.743766,lng:100.488938,type:'core',desc:'从 Tha Tien 过河最顺；瓷片镶嵌的高塔是曼谷天际线地标。'},
-  {id:'flower-market',city:'bangkok',name:'Pak Khlong Talat 花市',lat:13.74198,lng:100.49955,type:'optional',desc:'王城线的傍晚补充，不必为了夜里最繁忙的时段熬夜。'},
-  {id:'talat-noi',city:'bangkok',name:'Talat Noi',lat:13.733747,lng:100.513047,type:'core',desc:'LP 重点选择。修车铺、老宅、宗祠、街头艺术与河岸叠在一起的步行片区。'},
-  {id:'yaowarat',city:'bangkok',name:'Yaowarat Road 唐人街',lat:13.73944,lng:100.51153,type:'core',desc:'夜间小吃主轴；与 Talat Noi 从下午步行到晚上最自然。'},
-  {id:'wat-traimit',city:'bangkok',name:'Wat Traimit 金佛寺',lat:13.738133,lng:100.513728,type:'optional',desc:'靠近唐人街入口，可在下午闭馆前作为文化起点。'},
-  {id:'jim-thompson',city:'bangkok',name:'Jim Thompson House',lat:13.749246,lng:100.528373,type:'indoor',desc:'LP 重点选择。泰式木屋、丝绸产业与收藏史；雨天友好但仍有庭院步行。'},
-  {id:'bacc',city:'bangkok',name:'Bangkok Art & Culture Centre',lat:13.746604,lng:100.530069,type:'indoor',desc:'官方开放 Tue–Sun 10:00–20:00，周一闭馆；与 Jim Thompson/Siam 组合。'},
-  {id:'lumphini',city:'bangkok',name:'Lumphini Park',lat:13.731298,lng:100.541704,type:'optional',desc:'清晨或傍晚散步，雨后草地泥泞时改走硬质步道。'},
-  {id:'benjakitti',city:'bangkok',name:'Benjakitti Forest Park',lat:13.72695,lng:100.55948,type:'optional',desc:'湿地式城市公园与高架步道，适合现代曼谷半日的日落。'},
-  {id:'mahanakhon',city:'bangkok',name:'King Power Mahanakhon',lat:13.723033,lng:100.528282,type:'optional',desc:'LP 重点观景台。低云/雷雨时不要提前锁定不可退票时段。'},
-  {id:'chatuchak',city:'bangkok',name:'Chatuchak Weekend Market',lat:13.799923,lng:100.550824,type:'optional',desc:'仅周末最完整；10 月 3–4 日可用上午半天，避开下午闷热。'},
-  {id:'or-tor-kor',city:'bangkok',name:'Or Tor Kor Market',lat:13.80187,lng:100.54812,type:'food',desc:'Chatuchak 旁更适合稳定吃午餐与买水果的市场。'},
-  {id:'krua-apsorn',city:'bangkok',name:'Krua Apsorn (Dusit)',lat:13.774202,lng:100.506363,type:'food',desc:'LP + Michelin Bib Gourmand 2026；中央/南部泰菜。'},
-  {id:'jok-prince',city:'bangkok',name:'Jok Prince',lat:13.72072,lng:100.51456,type:'food',desc:'Charoen Krung 老牌泰式粥，Talat Noi 线顺路。'},
-  {id:'ayutthaya-mahathat',city:'ayutthaya',name:'Wat Mahathat',lat:14.35692,lng:100.56848,type:'optional',desc:'树根佛头与高棉式塔群，是阿瑜陀耶最直观的遗址入口。'},
-  {id:'ayutthaya-sanphet',city:'ayutthaya',name:'Wat Phra Si Sanphet',lat:14.35501,lng:100.55831,type:'optional',desc:'旧王宫范围内三座并列佛塔，理解王城尺度的核心。'},
-  {id:'ayutthaya-chai',city:'ayutthaya',name:'Wat Chaiwatthanaram',lat:14.34294,lng:100.54152,type:'optional',desc:'位于河西岸，傍晚光线好；通常需要嘟嘟车或包车衔接。'}
+  {id:'sukhothai-mahathat',city:'sukhothai',name:'Wat Mahathat 素可泰玛哈泰寺',lat:17.01694,lng:99.70314,type:'core',desc:'历史公园的中心。莲花苞式主塔、佛像和水面在傍晚形成整趟路线里最安静的一段。'},
+  {id:'wat-sa-si',city:'sukhothai',name:'Wat Sa Si 沙西寺',lat:17.01972,lng:99.69936,type:'core',desc:'池中小岛上的佛塔和行走佛。我们等日落前再来，不用在正午匆匆拍完。'},
+  {id:'wat-si-chum',city:'sukhothai',name:'Wat Si Chum 西春寺',lat:17.02677,lng:99.69362,type:'core',desc:'狭窄佛殿里坐着巨大的 Phra Achana 佛像，尺度和空间感与清迈、曼谷都不同。'},
+  {id:'sukhothai-cafe',city:'sukhothai',name:'Cafe Thammada',lat:17.01779,lng:99.70491,type:'drink',desc:'历史公园入口附近的冷气和冰饮停靠点。当天营业状态要复查。'},
+  {id:'ths',city:'sukhothai',name:'Sukhothai Airport THS',lat:17.23804,lng:99.81818,type:'transport',desc:'素可泰开口路线的关键。班次少，出票前必须重新核对飞曼谷的时间。'},
+  {id:'grand-palace',city:'bangkok',name:'Grand Palace 与 Wat Phra Kaew',lat:13.75002,lng:100.49129,type:'core',desc:'曼谷王城主轴。我们早到，把最需要体力和注意力的地方放在热起来之前。'},
+  {id:'wat-pho',city:'bangkok',name:'Wat Pho 卧佛寺',lat:13.746553,lng:100.49334,type:'core',desc:'卧佛、佛塔和传统医药历史放在同一座寺院里。看完王宫走过来最顺。'},
+  {id:'wat-arun',city:'bangkok',name:'Wat Arun 郑王庙',lat:13.743766,lng:100.488938,type:'core',desc:'从 Tha Tien 过河后，瓷片镶嵌的高塔会从远景变成能看清材质的建筑。'},
+  {id:'flower-market',city:'bangkok',name:'Pak Khlong Talat 花市',lat:13.74198,lng:100.49955,type:'optional',desc:'王城线的傍晚补充。累了就删，不需要为了最热闹的时段熬夜。'},
+  {id:'talat-noi',city:'bangkok',name:'Talat Noi',lat:13.733747,lng:100.513047,type:'core',desc:'修车铺、老宅、宗祠、街头艺术与河岸叠在一起的步行片区。'},
+  {id:'yaowarat',city:'bangkok',name:'Yaowarat Road 唐人街',lat:13.73944,lng:100.51153,type:'core',desc:'夜间小吃主轴。我们从 Talat Noi 慢慢走来，每站只分着吃一两样。'},
+  {id:'wat-traimit',city:'bangkok',name:'Wat Traimit 金佛寺',lat:13.738133,lng:100.513728,type:'optional',desc:'靠近唐人街入口。下午来得及就作为文化起点，闭馆后直接从街区开始。'},
+  {id:'jim-thompson',city:'bangkok',name:'Jim Thompson House',lat:13.749246,lng:100.528373,type:'indoor',desc:'六座泰式木屋、丝绸产业和收藏史。下雨友好，但庭院和楼梯仍需要走。'},
+  {id:'bacc',city:'bangkok',name:'Bangkok Art & Culture Centre',lat:13.746604,lng:100.530069,type:'indoor',desc:'Siam 一带最稳的雨天停靠点。官方目前周二至周日开放，周一闭馆。'},
+  {id:'lumphini',city:'bangkok',name:'Lumphini Park',lat:13.731298,lng:100.541704,type:'optional',desc:'清晨或傍晚散步。雨后草地泥泞时改走硬质步道。'},
+  {id:'benjakitti',city:'bangkok',name:'Benjakitti Forest Park',lat:13.72695,lng:100.55948,type:'optional',desc:'湿地式城市公园和高架步道，适合现代曼谷半日的日落。'},
+  {id:'mahanakhon',city:'bangkok',name:'King Power Mahanakhon',lat:13.723033,lng:100.528282,type:'optional',desc:'低云或雷雨时不提前锁定不可退票时段。'},
+  {id:'chatuchak',city:'bangkok',name:'Chatuchak Weekend Market',lat:13.799923,lng:100.550824,type:'optional',desc:'周末才最完整。我们早去、先逛目标区，午后闷热前离开。'},
+  {id:'or-tor-kor',city:'bangkok',name:'Or Tor Kor Market',lat:13.80187,lng:100.54812,type:'food',desc:'Chatuchak 对面更适合稳定吃午饭和买水果的市场。'},
+  {id:'krua-apsorn',city:'bangkok',name:'Krua Apsorn (Dusit)',lat:13.774202,lng:100.506363,type:'food',desc:'中央与南部泰菜，是否仍获当年推荐以及营业时间临近再核。'},
+  {id:'jok-prince',city:'bangkok',name:'Jok Prince',lat:13.72072,lng:100.51456,type:'food',desc:'Charoen Krung 的老牌泰式粥。它和 Talat Noi 同方向，但别为了绕路硬塞。'},
+  {id:'ayutthaya-mahathat',city:'ayutthaya',name:'Wat Mahathat 大城玛哈泰寺',lat:14.35692,lng:100.56848,type:'optional',desc:'树根佛头和高棉式塔群，是阿瑜陀耶最直观的遗址入口。'},
+  {id:'ayutthaya-sanphet',city:'ayutthaya',name:'Wat Phra Si Sanphet',lat:14.35501,lng:100.55831,type:'optional',desc:'旧王宫范围内三座并列佛塔，能看出王城尺度。'},
+  {id:'ayutthaya-chai',city:'ayutthaya',name:'Wat Chaiwatthanaram',lat:14.34294,lng:100.54152,type:'optional',desc:'位于河西岸，傍晚光线好，通常需要嘟嘟车或包车衔接。'}
 ];
 
+const lp={title:'Lonely Planet Thailand 18th Edition',note:'已上传电子书。这里仅转述与现场观察有关的背景，不复制书中长段文字。'};
+const src=(title,url,kind='官方')=>({title,url,kind});
+const details={
+  'wat-phra-singh':{imageFile:'20171105 Golden elephant statue of the Wat Phra Singh temple, Chiang Mai, Thailand 9843 DxO.jpg',why:'我想从这里开始老城，不只是因为它有名。先看过帕辛寺的木构、金色纹样和香火，我们后面走到几座小寺时会更容易分辨兰纳建筑的语气。',story:'寺院因供奉 Phra Singh 佛像而受敬重。现存空间经历多次修建，不能把它当成某一个年代原封不动留下的作品。Lonely Planet 特别提醒主佛殿与马赛克装饰，也提到 14 世纪佛塔的王室背景。',lookFor:['先看 Viharn Lai Kham 较低的屋檐和金色外墙，它和大殿的尺度不一样','绕到佛塔附近找大象托举的造型，再看礼佛的人如何使用回廊','进殿前留意鞋子、肩膝遮盖和拍照提示'],together:'我们早上先到这里，慢慢走完再向东去潘道寺。若当天很热，后面博物馆和市场只留一个。',rain:'短雨可以在廊下等。暴雨时寺内石面会滑，缩短室外停留，直接转兰纳民俗馆。',current:['宗教场所的仪式和局部开放会临时变化','衣着覆盖肩膝，进殿脱鞋'],sources:[lp,src('Tourism Authority of Thailand · Chiang Mai temple route','https://www.tourismthailand.org/Articles/self-driving-chiang-mai')]},
+  'wat-phan-tao':{imageFile:'Wat Phan Tao Chiang Mai Thailand.jpg',why:'它紧贴契迪龙寺，却把材质从砖和灰泥一下换成深色柚木。我们不用停很久，这个转折本身就值得看。',story:'Lonely Planet 把这座大殿的柚木结构和 28 根木柱作为观察重点。它曾与王室建筑材料和工匠传统有关，今天看到的空间也经过修缮。',lookFor:['正面木墙在阳光和阴天里的颜色差别','门楣上的孔雀与狗年生肖线索','殿内连续木柱造成的纵深'],together:'从帕辛寺一路向东，先看潘道寺，再步行几分钟到契迪龙寺。',rain:'大殿能挡一阵雨，但庭院积水时不要久留。',sources:[lp]},
+  'wat-chedi-luang':{imageFile:'20171105 Wat Chedi Luang Chiang Mai 9897 DxO.jpg',why:'它没有被修回“完整”，反而让人直接感到这座城曾经想把佛塔建到多大。我会把它留在上午最后一站。',story:'佛塔在 15 世纪上半叶达到高耸规模，玉佛曾在这里供奉。顶部后来坍毁，成因在地震与战事说法之间并不完全一致。20 世纪末的加固修复也引发过形态讨论。',lookFor:['四面台阶、佛龛和残缺上部之间的比例','基座上的石象哪些是修复补入，哪些保留较旧形态','从树荫下退远一点看佛塔如何压住周围屋顶'],together:'看完这里就停寺庙线。我们去吃饭、午休，下午只在民俗馆和 Warorot 里选一个。',rain:'砖石在大雨里很滑，雷雨时不要绕塔久走。',sources:[lp,src('Tourism Authority of Thailand · Chiang Mai route','https://www.tourismthailand.org/Articles/self-driving-chiang-mai')]},
+  'lanna-museum':{imageFile:'Exhibit at Lanna Folklife Museum - Chiang Mai - Thailand (35098001366).jpg',why:'上午寺庙看多了容易只剩“金色很好看”。这里能把建筑、仪式和日常器物重新接回去，下雨时尤其合适。',story:'展陈围绕兰纳地区的宗教、生活与手工艺。它适合作为理解工具，不需要逐柜读完。',lookFor:['寺庙屋顶与木构模型','节庆、供品和服饰如何对应前面见到的空间','城市与山区文化在展陈里如何被区分'],together:'我们只挑两三个主题看，控制在一小时左右。若当日闭馆，就把时间给 Warorot。',rain:'这是老城最稳的室内替代之一。开放日和票价出发前在当地官方页面复核。',sources:[lp,src('TAT · Chiang Mai cultural route','https://www.tourismthailand.org/Articles/self-driving-chiang-mai')]},
+  'warorot':{imageFile:'Warorot Market 01.jpg',why:'看完寺庙以后，我想和你走进一座还在过日子的市场。这里的重点不在“网红小吃”，而在清迈怎样买菜、买干货、买衣料。',story:'Lonely Planet 把它描述为清迈最早的一批公共市场之一。市场靠河并非偶然，过去农产和货物很大部分由水路到达，邻近的花市也延续了这一带的交易功能。',lookFor:['楼层之间从熟食、干货到布料和家用品的变化','北泰香肠、猪皮和辣椒酱如何摆在一起卖','走到河边时看市场与码头、花市的距离'],together:'我们下午坐双条车或 Grab 从老城到这里。想吃就分着买一点，不把晚饭吃死。',rain:'市场主体能避雨，过街和河边仍会湿滑。暴雨时缩短河边段。',sources:[lp]},
+  'north-gate-jazz':{why:'如果当天还有精神，我们在北门边听一会儿现场。它是可以随时放弃的夜晚，不是必须完成的收尾。',story:'这里长期以拥挤、直接、离演奏者很近的现场氛围出名。演出安排与入场方式会变化。',lookFor:['当晚黑板或社交账号上的演出安排','室内外站位和音量差别','演出开始前先确认回酒店的车'],together:'从市场回酒店休息后再决定。到得晚没位置，就在附近喝一杯然后回去。',rain:'雨会让门口站位更拥挤，暴雨时不专程去。',sources:[lp]},
+  'monks-trail':{imageFile:'Monks Trail Chiang Mai.jpg',why:'天气合适时，这段上山路能让帕拉寺的出现更有层次。可一旦连续下雨，它就不值得拿滑倒风险来换。',story:'Lonely Planet 给出的传统步行参考是到 Wat Pha Lat 约 45 分钟，再继续到双龙寺还要约 75 分钟。路况和体力差异很大，我们只把第一段当选项。',lookFor:['树上或路旁的僧衣色路标','湿石、裸露树根和排水沟','到寺院前水声逐渐变近'],together:'早上先看地面。干爽才走到帕拉寺，之后坐红车继续上山，不把整条山路当挑战。',rain:'前夜大雨、当天雷雨或鞋底不合适，直接取消步行。',sources:[lp,src('TAT · Doi Suthep and Wat Pha Lat route','https://www.tourismthailand.org/Articles/self-driving-chiang-mai')]},
+  'wat-pha-lat':{imageFile:'Chiang Mai - Wat Pha Lat - 0001.jpg',why:'我更想和你在这里慢一点。寺庙被树、坡地和水声拆成许多小空间，不用站在正面拍一张就走。',story:'寺院与白象选择素贴山圣地的传说相连，但传说不能当成可证实的历史。20 世纪公路开通前后，寺院作为歇脚与修行空间的角色发生了变化。',lookFor:['那伽石阶如何顺着坡度进入树林','小瀑布和岩石怎样成为寺院空间的一部分','退到下方看屋顶从树叶间露出来'],together:'如果走 Monk’s Trail，我们到这里先休息。若坐车来，也不要一下车就赶双龙寺，至少留四十分钟。',rain:'小雨很美，暴雨和雷声出现就离开水边、石阶和林下。',sources:[lp,src('TAT · Wat Pha Lat','https://www.tourismthailand.org/Articles/self-driving-chiang-mai')]},
+  'doi-suthep':{imageFile:'Phra That Doi Suthep 01.jpg',why:'它名气大，但仍值得。我们来看清迈如何把一座山寺当成城市信仰中心，也看它与山下城区的关系。',story:'寺院创建历史与白象选址传说交织。306 级那伽阶梯是到达仪式的一部分，金色佛塔和回廊则构成寺院核心。',lookFor:['那伽阶梯从山门到平台的视线变化','金色佛塔周围礼佛和绕行的方向','低云时把注意力从观景台转到回廊、铃铛和屋顶'],together:'我们坐红车上山，不把步行和观景都当必需。下山后直接回宁曼喝咖啡。',rain:'雷雨时不在观景台和外廊久停。大雨可缩短或整段取消。',current:['寺院开放、缆车和交通管制可能临时调整','进入核心区域覆盖肩膝并脱鞋'],sources:[lp,src('TAT · Wat Phra That Doi Suthep','https://www.tourismthailand.org/Attraction/wat-phra-that-doi-suthep')]},
+  'wat-umong':{imageFile:'Tunnels at Wat Umong Suan Phutthatham-10.jpg',why:'如果山寺之后我们还想要安静，就来这里看林地和隧道。若更想喝咖啡、逛小店，就换 Baan Kang Wat。',story:'寺院以砖砌隧道与林地环境著称，今天的体验既有宗教空间，也有公园式散步。',lookFor:['隧道内声音和温度的变化','壁龛与通道如何组织礼佛方向','林地里的佛头与树根'],together:'它和 Baan Kang Wat 距离近，下午只选一个主角。',rain:'隧道可避短雨，入口与林地仍会滑。',sources:[lp]},
+  'baan-kang-wat':{why:'我把它放在山下，是给我们一个不用继续“看景点”的下午。挑一家工作室、喝点东西就够了。',story:'这是由小型工作室、店铺与公共庭院组成的创意社区。商户独立营业，不能把整个园区的状态当成固定不变。',lookFor:['工作室与院落之间的步行尺度','陶艺、印刷和织物店各自的制作痕迹','树荫和座位是否适合当日雨势'],together:'从 Wat Umong 过来很近。若店铺休息，就直接去 CMU Art Center 或宁曼。',rain:'中雨可逛有顶空间，暴雨时出入口和庭院仍不舒服。',sources:[src('Baan Kang Wat · Instagram/现场信息','https://www.google.com/maps/search/?api=1&query=Baan+Kang+Wat+Chiang+Mai','现场复核')]},
+  'ristr8to':{why:'清迈大学附近喝咖啡当然要有。我选它是因为咖啡本身，不是为了端着一杯拍照。',story:'Ristr8to 以意式咖啡、奶咖和竞赛经历出名，宁曼店客流也因此不稳定。菜单与营业时间临近再看。',lookFor:['先看当天豆单和浓缩基底再点','两个人可以一杯奶咖加一杯手冲或浓缩分着试','排队超过二十分钟就把附近独立店当同等选项'],together:'我们睡够再来。喝完往 CMU Art Center 或安娇湖走，不另外跨城。',rain:'咖啡馆能避雨，门口排队和座位才是变量。',sources:[src('Ristr8to · Google Maps 实时信息','https://www.google.com/maps/search/?api=1&query=Ristr8to+Original+Chiang+Mai','现场复核')]},
+  'cmu-art-center':{why:'如果下午下雨，我们不必在商场里耗着。这里有展览可看，也正好在宁曼和校园之间。',story:'清迈大学艺术与文化中心承担展览、研究和兰纳文化保存。附近的兰纳传统民居博物馆由多座住宅和粮仓组成，开放安排与艺术中心不同。',lookFor:['先在官网看当前展览标题，避免空跑','建筑或民居里木构、抬高地面和通风方式','把展览内容与上午寺庙或市场看见的材料相互印证'],together:'我们只在展览确实想看时进去。晴天也可以直接跳过，把时间留给湖边。',rain:'这是清迈西侧最稳的雨天替代。艺术中心与传统民居的开放日要分别确认。',current:['艺术文化中心官网写常规办公开放为周一至周五 08:30–16:30','兰纳传统民居博物馆官网写周二至周日 08:30–16:30'],sources:[src('Chiang Mai University Art & Culture Center','https://artculture.cmu.ac.th/en/')]},
+  'ang-kaew':{imageFile:'อ่างแก้ว_มหาวิทยาลัยเชียงใหม่_-_panoramio.jpg',why:'我想和你在这里慢一点。喝完咖啡以后，我们沿湖边走一圈，看素贴山压在水面后面，不需要再赶一个“著名景点”。',story:'安娇湖是清迈大学校园内的蓄水与休闲空间。今天它被学生和市民用来散步、慢跑与看山，也是理解校园贴着山脚生长的最好位置之一。',lookFor:['先站在湖的东侧看素贴山和水面的关系','沿步道观察学生跑步、休息和日常使用方式','傍晚云层厚时看山的轮廓，不执着日落'],together:'我们把它放在 17:00 左右。走完再去宁曼吃饭，整段都在同一小圈。',rain:'阵雨可以在附近室内等。连续下就改 CMU Art Center 或宁曼，湖边不用硬走。',current:['CMU Super App 页面目前写每日 06:00–22:00','校园临时分流或访客接驳以现场要求为准'],sources:[src('Chiang Mai University · Ang Kaew','https://superapp.camt.cmu.ac.th/places/ang-kaew')]},
+  'one-nimman':{why:'这不是我想专门逛的商场，只是让我们在湖边之后不用再研究跨城晚饭。',story:'宁曼片区把咖啡、餐馆、设计店和夜间活动集中在步行尺度里，One Nimman 是一个好认的落点。',lookFor:['从主路拐进小巷后店铺密度的变化','雨后有遮棚的步行路径','晚饭前先看哪家真的有人在吃'],together:'安娇湖后回到这里。想逛就逛，不想就直接吃饭。',rain:'是西侧最方便的雨天收尾之一。',sources:[src('One Nimman · 官方网站','https://www.onenimman.com/')]},
+  'sukhothai-mahathat':{imageFile:'Sukhothai, Wat Mahathat, Thailand.jpg',why:'素可泰值得多这一晚，关键就在这里。我们不在正午完成遗址清单，傍晚骑进中央区，让水面、草地和砖塔自己把节奏放慢。',story:'素可泰在 13 至 15 世纪成为重要都城。UNESCO 把这里与 Si Satchanalai、Kamphaeng Phet 作为连续遗产理解，强调早期泰国建筑语言、佛教艺术和复杂水利系统。玛哈泰寺是王城宗教核心。',lookFor:['莲花苞式主塔与周围小塔的层级','步行佛、坐佛和残存柱列之间的视线','池塘、堤岸与寺院并置，说明遗址不只有建筑'],together:'我们先租车或自行车，16:30 左右进入中央区。第一晚只看这里和沙西寺，天黑就回。',rain:'短雨后砖色会更深，但积水、雷雨或骑行视线差时不勉强。',current:['历史公园分区时段和票务临近出发向泰国艺术厅复核'],sources:[src('UNESCO · Historic Town of Sukhothai','https://whc.unesco.org/en/list/574/','世界遗产'),src('Fine Arts Department · Sukhothai Historical Park','https://www.qrcode.finearts.go.th/index.php/th/historicalpark/sukhothai/sukhothai-05'),lp]},
+  'wat-sa-si':{imageFile:'Sukhothai - Wat Sa Si seen across the lotus pond Jan 2024.jpg',why:'它在水中小岛上，位置比建筑本身更重要。我想把它放在日落前，看佛塔、行走佛和水面慢慢变成同一种颜色。',story:'寺院位于 Traphang Tra Kuan 水池中，锡兰式钟形佛塔和素可泰行走佛让这里与玛哈泰寺的轴线感不同。',lookFor:['过桥前先从水对岸看完整轮廓','行走佛身体重心和手势','钟形佛塔与莲花苞式主塔的差别'],together:'从玛哈泰寺骑来很近。天色够就停，雨势大就回，不另赶外围。',rain:'桥面和草地湿滑时不等日落。',sources:[src('UNESCO · Sukhothai','https://whc.unesco.org/en/list/574/','世界遗产'),lp]},
+  'wat-si-chum':{imageFile:'Wat Si Chum Sukhothai Thailand.jpg',why:'第二天早上来这里，是为了让素可泰不只剩远看的佛塔。狭窄佛殿和巨大坐佛会把人的尺度突然压小。',story:'Phra Achana 坐佛被围在高大的 mondop 中，顶部开放，光线从上方落下。遗址与石刻、地方传说都有联系，现场不要把传奇当成确证。',lookFor:['先在入口看手指和脸如何被墙框住','走近观察佛手表面的金箔','抬头看开口如何让自然光落到佛像上'],together:'清晨从中央区骑或叫车来。看完回入口附近吃东西、休息，再去机场。',rain:'佛殿能挡短雨，外围路面和骑行仍受影响。',sources:[src('UNESCO · Sukhothai','https://whc.unesco.org/en/list/574/','世界遗产'),lp]},
+  'grand-palace':{imageFile:'A roof of a building at the Grand Palace, Bangkok, sunrise, 2017.jpg',why:'第一次到曼谷，我还是想和你把王城看清楚。我们早一点进去，不追求每栋楼都读完，先看权力、宗教和装饰怎样挤在同一片院落里。',story:'大皇宫自 18 世纪末成为暹罗王权核心，玉佛寺位于宫墙之内。建筑群持续增建，今天看到的是多个时期、不同用途与装饰系统叠加的结果。',lookFor:['玉佛寺回廊的 Ramakien 壁画和修复痕迹','金色佛塔、藏经阁与王室建筑屋顶的轮廓差别','礼仪空间如何用墙、门和平台控制移动'],together:'我们 08:30 前到。看两小时左右就出来，走去卧佛寺吃饭和休息。',rain:'短雨有回廊可避，暴雨会让院落移动很累。王宫当天若因王室活动调整，以官方日历为准。',current:['官网目前写 08:30–16:30，售票至 15:30','外国游客票目前 500 THB','覆盖肩膝，按入口安检和着装要求执行'],sources:[src('The Grand Palace · Visitor information','https://www.royalgrandpalace.th/en/contact'),src('The Grand Palace · Official ticket','https://www.royalgrandpalace.th/en/buy-ticket'),lp]},
+  'wat-pho':{imageFile:'Wat Pho, Bangkok, Tailandia, 2013-08-22, DD 07.jpg',why:'王宫之后来这里，重点不只是卧佛。我们可以从巨大身体的尺度，走到院落里密集的佛塔，再看到寺院与传统医药教育的关系。',story:'Wat Pho 是曼谷最重要的皇家寺院之一，现有建筑与 Rama I 以来的扩建有关。寺院也以传统医药、按摩知识与碑刻传承闻名。',lookFor:['从脚底端看卧佛的尺度和螺钿纹样','院落里彩色小塔群的重复与差异','壁面知识图像如何把寺院变成学习空间'],together:'从大皇宫南侧步行过来。中午在附近休息，体力恢复后再过河。',rain:'主体建筑可避雨，院落之间仍暴露。按摩若想体验，先看官方现场安排。',current:['官网主页目前写 08:00–19:30、外国游客 300 THB；联络页出现 08:30 的差异，出发前再次核对','覆盖肩膝，遵守殿内拍摄提示'],sources:[src('Wat Pho · Official website','https://www.watpho.com/en/home'),src('Wat Pho · Plan your visit','https://www.watpho.com/en/contact/plan'),lp]},
+  'wat-arun':{imageFile:'Templo Wat Arun, Bangkok, Tailandia, 2013-08-22, DD 30.jpg',why:'隔着河看它是一张曼谷明信片，坐船过去以后才会看见高塔表面其实由瓷片、贝壳和细小图案组成。这个远近变化值得。',story:'寺院可追溯至阿瑜陀耶时期，在吞武里成为王家寺院，主塔在 Rama II 与 Rama III 时期形成今天的主要规模。瓷片与贝壳镶嵌让它在不同光线下呈现不同质感。',lookFor:['从 Tha Tien 码头先看河对岸的完整轮廓','靠近后找瓷片、贝壳和 Benjarong 图案','留意陡阶和游客动线，不为照片逆行'],together:'我们从卧佛寺附近过河。下午热就先喝点东西，花市可以删。',rain:'塔阶湿滑时不上高处。雷雨时缩短河边和摆渡段。',sources:[src('TAT · Wat Arun','https://www.tourismthailand.org/Attraction/wat-arun-ratchawararam-ratchawaramahawihan'),src('TAT · Bangkok temples','https://www.tourismthailand.org/Articles/top-5-must-visit-temples-in-bangkok-once-in-a-lifetime'),lp]},
+  'flower-market':{imageFile:'Bangkok Pak Khlong Talat 2.jpg',why:'如果我们从郑王庙回来还有精神，就去看城市怎样在傍晚处理成捆的花。累了就直接回去，没有遗憾。',story:'Pak Khlong Talat 是曼谷重要的花卉与农产品交易区。它的价值在工作节奏和街巷使用，不是单一建筑。',lookFor:['花束从批发包装到零售小串的变化','推车、摊位和道路如何分享狭窄空间','尊重工作中的商贩，拍近景先示意'],together:'从 Tha Tien 一带步行或叫车过去。只留半小时到一小时。',rain:'棚内可走，路口积水和车流会更麻烦。',sources:[lp]},
+  'talat-noi':{imageFile:'Talat Noi Street Art.jpg',why:'我想让曼谷不只剩王宫和商场。这里有修车铺、宗祠、老宅和新咖啡店挤在一起，变化并不整齐，反而好看。',story:'Talat Noi 靠河发展，华人商业、仓储、修车与宗教空间长期叠加。Lonely Planet 把它列为适合步行与街头观察的老社区。',lookFor:['汽车零件和油污怎样占用店铺正面','So Heng Tai 等老宅与新店之间的距离','宗祠、教堂和河岸说明这里不只有一种移民历史'],together:'我们下午才来，从巷子慢慢走到 Yaowarat。不要为了每幅街头画绕路。',rain:'阵雨时找咖啡馆或屋檐。暴雨会让小巷积水，直接坐车去 Yaowarat 或回酒店。',sources:[lp,src('TAT · Bangkok overview','https://www.tourismthailand.org/Destinations/Provinces/Bangkok/219')]},
+  'wat-traimit':{imageFile:'2016 Bangkok, Dystrykt Samphanthawong, Wat Traimit Witthayaram (08).jpg',why:'如果下午来得及，我们从金佛寺开始，让唐人街先有一段历史线索。赶不上闭馆也没关系，街区本身才是今晚主角。',story:'寺内金佛以材质、尺度和重新发现的故事著称。关于发现经过有多种叙述，现场解说与官方材料优先。',lookFor:['佛像表面金色与殿内光线','展陈如何解释金佛被灰泥覆盖的历史','从高处看华蓬与 Yaowarat 的城市关系'],together:'看完步行进入 Talat Noi。闭馆就直接从老街开始。',rain:'寺内可避雨，台阶湿时放慢。',sources:[lp]},
+  'yaowarat':{imageFile:'2016 Bangkok, Dystrykt Samphanthawong, Ulica Yaowarat (05).jpg',why:'今晚不列十家必吃。我们从街头慢慢走，每站分一两样，喜欢就加，不喜欢就换。',story:'Yaowarat 是曼谷华人商业与餐饮主轴，白天的金铺、药材与批发，入夜后又被摊位和霓虹重新占用。',lookFor:['傍晚店面从白天生意切换到夜市的过程','同一种粿条或炭烤在不同摊位的做法','排队过长时看隔壁本地客流，不追唯一店名'],together:'我们从 Talat Noi 走来，吃到七八分饱就停。回程用 MRT Wat Mangkon 或 Grab。',rain:'中雨仍可在骑楼和店内移动，暴雨时直接选一家坐下吃。',sources:[lp]},
+  'jim-thompson':{imageFile:'JT House - Jim Thompson House, Bangkok - Thailand - panoramio.jpg',why:'这不是只在雨天才去的备胎。六座木屋、收藏和一个人的复杂经历，正好让我们从王城转到 20 世纪曼谷。',story:'Jim Thompson 将多座传统泰式木屋重组为住宅与收藏空间，并推动泰丝国际传播。他 1967 年失踪，相关猜测很多，不能把传闻写成结论。',lookFor:['木屋抬高、通风和门槛的做法','不同房屋被重新组合后哪里仍能看出原结构','收藏品如何被放进居住空间，而非白盒展厅'],together:'我们预约或现场买票后跟官方导览，不另塞很多购物。下午步行或一站交通去 BACC。',rain:'适合雨天，但庭院、木阶和无电梯仍要考虑。',current:['官网目前写每日 10:00–17:00，最后导览 17:00','参观必须跟官方导览，可选中文','成人目前 250 THB，只在现场售票','超过 20 厘米的包需寄存，楼梯无电梯'],sources:[src('Jim Thompson House · Visitor information','https://jimthompsonhouse.org/visitor-information/'),lp]},
+  'bacc':{imageFile:'BKK Art and Culture Centre.jpg',why:'如果曼谷下雨，我希望我们有一个真的能待住的地方，不是把下午全交给商场。展览看累了再过天桥去吃饭。',story:'BACC 是曼谷市中心的公共当代艺术空间，环形动线连接展厅、书店与小型文化空间。展览不断更换，背景应以当期项目为准。',lookFor:['先看一层当日展览表，不必逐层打卡','螺旋上升的公共空间如何组织视线','免费展与需登记项目分开确认'],together:'Jim Thompson 后过来最顺。我们挑一两个展，不为“逛完”走到闭馆。',rain:'完整室内线，周一闭馆是最重要的限制。',current:['官网目前写周二至周日 10:00–20:00、免费入场、周一闭馆'],sources:[src('Bangkok Art and Culture Centre','https://www.bacc.or.th/en')]},
+  'benjakitti':{why:'晴天的话，我们把现代曼谷这天留一段给湿地和高架步道。它会让高楼之间的空间突然松开。',story:'公园由原烟草工厂区域逐步转型，水体、湿地与高架步行系统兼顾休闲和城市生态。',lookFor:['高架步道与地面湿地的两种视角','旧工业建筑保留的尺度','傍晚高楼倒影与水鸟活动'],together:'从 Siam 一带坐 MRT 或 Grab 过去。云层太厚或已经累，就不去。',rain:'雷雨时不走高架与开阔水边。',sources:[src('TAT · Bangkok overview','https://www.tourismthailand.org/Destinations/Provinces/Bangkok/219')]},
+  'chatuchak':{imageFile:'Chatuchak Weekend Market 2.jpg',why:'只有日期正好落在周末、我们也想逛市场时才去。早上进，买到喜欢的就停，下午不在闷热里硬撑。',story:'Chatuchak 由大量分区与独立摊位组成，周末是最完整的零售时段。开放与摊位状态随周几差异很大。',lookFor:['进门先记入口和分区编号','把目标限制在两三类，别沿每条巷子扫完','补水、空调和集合点比“最佳路线”更重要'],together:'09:00 左右到，中午去对面的 Or Tor Kor 吃饭，14:00 前离开。',rain:'有顶但闷热、积水和人流仍会影响体验。暴雨时改 BACC。',current:['市场网站目前写周六、周日 09:00–18:00 为完整周末市场；临近再核'],sources:[src('Chatuchak Market · Opening times','https://www.chatuchakmarket.org/opening-times/')]},
+  'or-tor-kor':{why:'逛完 Chatuchak，我们不继续在摊位里找午饭，过街来这里坐下、吃水果，把节奏稳住。',story:'这是以农产、熟食和水果见长的市场，环境比大型周末市场更易辨认。',lookFor:['先绕一小圈再决定吃什么','两个人分着试当季水果','价格和份量先问清楚'],together:'只在周末市场模块里出现，午饭后回 Siam。',rain:'主体有顶，过街和接驳时注意积水。',sources:[src('Or Tor Kor · Google Maps 实时信息','https://www.google.com/maps/search/?api=1&query=Or+Tor+Kor+Market+Bangkok','现场复核')]}
+};
+
+details['wat-phan-tao'].imageFile='Chiang Mai - Wat Phan Tao - 0001.jpg';
+details['monks-trail'].imageFile='Doi Suthep Monk Trail 1.jpg';
+Object.entries(details).forEach(([id,extra])=>Object.assign(places.find(x=>x.id===id)||{},extra));
 const p=id=>places.find(x=>x.id===id);
 const localDate=s=>new Date(`${s}T12:00:00`);
 const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const zhDate=d=>`${d.getMonth()+1}月${d.getDate()}日`;
 const week=d=>['周日','周一','周二','周三','周四','周五','周六'][d.getDay()];
 const add=(d,n)=>new Date(d.getTime()+n*DAY);
+const commonsImage=file=>file?`https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=1000`:'';
+const commonsPage=file=>file?`https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replaceAll(' ','_'))}`:'';
+const mapsSearch=place=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} Thailand`)}`;
+const mapsRoute=(a,b,mode='walking')=>`https://www.google.com/maps/dir/?api=1&origin=${a.lat},${a.lng}&destination=${b.lat},${b.lng}&travelmode=${mode}`;
 
 const dayDefs={
-  arrival:{title:'晚上抵达清迈 · 今晚只管安顿好',tag:'核心',summary:'到酒店、吃一顿不费脑子的晚饭，然后早点睡。第一晚不拿航班准点去赌任何预订。',slots:['晚间｜机场→酒店→附近吃饭','住哪里｜老城东侧或宁曼，整段清迈不换酒店','如果早到｜散步可以，远郊留给明天'],ids:[]},
-  cmOld:{title:'清迈老城 · 先把兰纳的线索串起来',tag:'核心',summary:'Lonely Planet 的老城寺庙线很适合第一次来，但我们把密度降下来：上午看建筑，下午去市场，晚上听爵士。',slots:['上午｜帕辛寺→潘道寺→契迪龙寺','下午｜午休后看博物馆或去 Warorot','晚上｜North Gate Jazz 或清迈门夜市'],ids:['wat-phra-singh','wat-phan-tao','wat-chedi-luang','lanna-museum','warorot','north-gate-jazz']},
-  cmWestSlow:{title:'清迈西线 · 山寺之后回到大学与咖啡',tag:'核心',summary:'短版也要留一点清迈的生活感。上午看山寺，下午去宁曼认真喝杯咖啡，17:00 左右到安娇湖散步。',slots:['上午｜包红车去 Wat Pha Lat→双龙寺','下午｜Ristr8to；排队太久就换附近独立店','傍晚｜安娇湖→宁曼随意吃晚饭'],ids:['wat-pha-lat','doi-suthep','ristr8to','ang-kaew','one-nimman']},
-  cmWest:{title:'清迈西线 · 山林、寺庙与手作社区',tag:'核心',summary:'晴或小雨才走 Monk’s Trail；雨后改坐红车。下午不要再冲景点，在悟孟寺或 Baan Kang Wat 二选一。',slots:["上午｜Monk's Trail→Wat Pha Lat",'中午｜红车继续到双龙寺','下午｜Wat Umong / Baan Kang Wat 二选一'],ids:['monks-trail','wat-pha-lat','doi-suthep','wat-umong','baan-kang-wat']},
-  cmSlow:{title:'清迈慢日 · 咖啡、校园与安娇湖',tag:'核心',summary:'这天不是行程的空白，而是两个人真的在清迈生活半天：晚起、喝咖啡、看小展，等湖边的光变软。',slots:['上午｜睡够再去宁曼喝咖啡','下午｜Baan Kang Wat / CMU Art Center','17:00｜安娇湖散步→宁曼晚饭'],ids:['ristr8to','baan-kang-wat','cmu-art-center','ang-kaew','one-nimman']},
-  cmFlex:{title:'清迈机动日 · 天气好才进山',tag:'可换',summary:'若特别想看雨季山林，可把慢日换成茵他侬；连续降雨就留在城里上烹饪课、看展、按摩。',slots:['晴/小雨｜茵他侬峰顶→Ang Ka→瀑布','中雨｜小班烹饪课+SPA','暴雨｜取消山区，回到老城和宁曼'],ids:['doi-inthanon','wachirathan','lanna-museum']},
-  cmToBkk:{title:'飞曼谷 · 傍晚从唐人街开始',tag:'核心',summary:'选 10:00–13:00 左右起飞最舒服。入住后别急着看王城，17:00 起从 Talat Noi 一路吃到 Yaowarat。',slots:['上午｜CNX 起飞，提前确认 BKK/DMK','下午｜入住 MRT/BTS 沿线','傍晚｜Talat Noi→Yaowarat 分站吃'],ids:['talat-noi','yaowarat','jok-prince']},
-  cmToSukhothai:{title:'清迈→素可泰 · 用半天换一场古都落日',tag:'核心',summary:'直达巴士约 5.5 小时，包车约 4.5 小时。住历史公园附近，放下行李后只骑中央区，不赶外围。',slots:['上午｜08:45 左右直达巴士 / 预约包车','下午｜入住 Mueang Kao，租自行车','16:30｜玛哈泰寺→沙西寺看日落'],ids:['sukhothai-mahathat','wat-sa-si']},
-  sukhothaiToBkk:{title:'素可泰晨骑 · 傍晚飞曼谷',tag:'核心',summary:'早起看中央区与西春寺，午后喝咖啡、休息。当前 PG214 约 17:50–19:10 飞 BKK，出票前再核对。',slots:['06:30/07:30｜中央区→西春寺','中午｜素可泰米粉→咖啡→回酒店取行李','15:30｜前往 THS；傍晚飞 BKK'],ids:['sukhothai-mahathat','wat-si-chum','sukhothai-cafe','ths']},
-  crTransfer:{title:'清迈→清莱 · 住一晚而非当天往返',tag:'核心',summary:'上午巴士约 3–3.5 小时，下午入住；包车去蓝庙，晚上回钟楼周边吃饭。',slots:['上午｜Arcade Bus Terminal→Chiang Rai','下午｜入住→蓝庙','晚上｜钟楼与夜市'],ids:['blue-temple','clock-tower']},
-  crToBkk:{title:'清莱建筑三联 · 晚飞曼谷',tag:'核心',summary:'白庙在城南、黑屋在城北，必须用包车组织；蓝庙若前一天看过可不重复。',slots:['08:00｜白庙，避开旅行团高峰','11:30｜午餐→黑屋博物馆','傍晚｜CEI→BKK/DMK'],ids:['white-temple','baan-dam','cei']},
-  bkkRoyal:{title:'曼谷王城 · 把最经典的一天走顺',tag:'核心',summary:'08:30 前到大皇宫，趁热气和团客还没完全上来。午后过河去郑王庙，累了就把花市删掉。',slots:['08:30｜大皇宫 / 玉佛寺','11:30｜卧佛寺→午餐和休息','15:00｜过河到郑王庙；有余力再去花市'],ids:['grand-palace','wat-pho','wat-arun','flower-market']},
-  bkkOld:{title:'Talat Noi、河岸与唐人街',tag:'核心',summary:'下午才出门，在老仓库、修车巷和河岸之间慢慢走到 Yaowarat。两个人分着吃，比一口气排十家店有趣。',slots:['下午｜Wat Traimit→Talat Noi','傍晚｜河岸/老街随走随停','晚上｜Yaowarat 每站只点一两样'],ids:['wat-traimit','talat-noi','yaowarat']},
-  bkkArts:{title:'现代曼谷 · Jim Thompson、BACC 与公园',tag:'可换',summary:'这是最完整的雨天替代线；注意 BACC 周一闭馆。天晴可在傍晚加 Lumphini/Benjakitti。',slots:['上午｜Jim Thompson House','下午｜BACC→Siam 商圈','傍晚｜Benjakitti 或 Mahanakhon'],ids:['jim-thompson','bacc','benjakitti','mahanakhon']},
-  bkkWeekend:{title:'周末市场半日 + 现代曼谷',tag:'可换',summary:'10 月 3–4 日才成立。09:00 到 Chatuchak，Or Tor Kor 午餐，14:00 前离开；下午回 Siam/BACC。',slots:['09:00｜Chatuchak 先逛目标区','12:00｜Or Tor Kor 午餐','下午｜BACC/Siam；不再塞王城'],ids:['chatuchak','or-tor-kor','bacc']},
-  departure:{title:'离开曼谷 · 保持低风险',tag:'核心',summary:'未给出航班时间，默认不安排跨河或远郊。晚班机才增加酒店附近咖啡/公园。',slots:['BKK｜轨道交通高峰另加 20–30 分钟','DMK｜Red Line 或出租车','国际航班｜建议提前约 3 小时到机场'],ids:[]}
+  arrival:{title:'晚上抵达清迈，我们只管安顿好',tag:'核心',area:'机场到酒店，没有固定游览圈',summary:'第一晚不拿航班准点去赌预订。我们放好行李，在住处附近吃一顿，然后早点睡。',slots:['晚间｜机场→酒店→附近吃饭','住哪里｜老城东侧或宁曼，清迈段不换酒店','如果早到｜只散步，远处留给明天'],ids:[]},
+  cmOld:{title:'清迈老城，把兰纳的线索串起来',tag:'核心',area:'老城西侧向东，傍晚延伸到河边市场',summary:'今天基本在老城步行。上午只看三座彼此很近的寺庙，中午热起来就停，下午去博物馆或市场。',slots:['上午｜帕辛寺→潘道寺→契迪龙寺','下午｜民俗馆和 Warorot 二选一或都短看','晚上｜还有精神再去 North Gate Jazz'],ids:['wat-phra-singh','wat-phan-tao','wat-chedi-luang','lanna-museum','warorot','north-gate-jazz'],segments:[['步行','15–20 分'],['步行','2–4 分'],['步行','7–10 分'],['双条车 / Grab','10–20 分'],['双条车 / Grab','10–20 分']]},
+  cmWestSlow:{title:'山寺之后，回大学附近喝咖啡',tag:'核心',area:'素贴山到宁曼与清迈大学西侧',summary:'短版也留一点清迈的生活感。上午坐车看两座山寺，下午回宁曼喝咖啡，17:00 左右去安娇湖。',slots:['上午｜红车去 Wat Pha Lat→双龙寺','下午｜Ristr8to，排太久就换附近店','傍晚｜安娇湖→宁曼吃晚饭'],ids:['wat-pha-lat','doi-suthep','ristr8to','ang-kaew','one-nimman'],segments:[['包红车','20–30 分'],['包红车下山','35–50 分'],['步行 / Grab','8–15 分'],['步行 / Grab','10–15 分']]},
+  cmWest:{title:'清迈西线，山林、寺庙和手作社区',tag:'核心',area:'素贴山脚与城西，同一条西线但有海拔变化',summary:'地面干爽才走 Monk’s Trail。山寺之后只在悟孟寺和 Baan Kang Wat 里选一个，不把下午排满。',slots:["上午｜Monk's Trail→Wat Pha Lat",'中午｜红车继续到双龙寺','下午｜Wat Umong / Baan Kang Wat 二选一'],ids:['monks-trail','wat-pha-lat','doi-suthep','wat-umong','baan-kang-wat'],segments:[['徒步','45–60 分'],['包红车','20–30 分'],['包红车下山','35–50 分'],['步行 / Grab','3–8 分']]},
+  cmSlow:{title:'清迈慢日，咖啡、校园和安娇湖',tag:'核心',area:'宁曼、清迈大学艺术中心与安娇湖小圈',summary:'这天不靠景点数量成立。我们晚一点出门，喝咖啡、看小展，等湖边的光变软。',slots:['上午｜睡够再去宁曼喝咖啡','下午｜Baan Kang Wat / CMU Art Center','17:00｜安娇湖→宁曼晚饭'],ids:['ristr8to','baan-kang-wat','cmu-art-center','ang-kaew','one-nimman'],segments:[['Grab','15–20 分'],['Grab','10–15 分'],['步行 / Grab','10–15 分'],['步行 / Grab','10–15 分']]},
+  cmFlex:{title:'清迈机动日，天气好才进山',tag:'可换',area:'茵他侬山区，跨城远郊模块',summary:'若我们特别想看雨季山林，就用慢日换茵他侬。连续降雨时留在城里看展、上课或按摩。',slots:['晴 / 小雨｜峰顶→Ang Ka→瀑布','中雨｜烹饪课 + SPA','暴雨｜取消山区，回老城和宁曼'],ids:['doi-inthanon','wachirathan','lanna-museum'],segments:[['包车','50–70 分'],['包车回城','约 2 小时']]},
+  cmToBkk:{title:'飞曼谷，傍晚从唐人街开始',tag:'核心',area:'上午跨城，傍晚只在 Talat Noi 与 Yaowarat',summary:'我会先选中午前后的航班，把傍晚还给我们。入住以后从旧巷慢慢走到唐人街，不急着看王城。',slots:['上午｜CNX 起飞，确认落地 BKK 还是 DMK','下午｜入住 MRT / BTS 沿线','傍晚｜Talat Noi→Yaowarat 分着吃'],ids:['talat-noi','yaowarat','jok-prince'],segments:[['步行','20–30 分'],['Grab / 步行','15–25 分']]},
+  cmToSukhothai:{title:'清迈到素可泰，用半天换一场落日',tag:'核心',area:'上午跨城，傍晚只骑历史公园中央区',summary:'直达巴士会用掉半天，所以我们只在 8 晚版打开它。放下行李以后骑中央区，不赶外围。',slots:['上午｜直达巴士约 5.5 小时 / 预约包车','下午｜住 Mueang Kao，租自行车','16:30｜玛哈泰寺→沙西寺'],ids:['sukhothai-mahathat','wat-sa-si'],segments:[['自行车','5–10 分']]},
+  sukhothaiToBkk:{title:'素可泰晨骑，傍晚飞曼谷',tag:'核心',area:'历史公园中央区向西北，再去机场',summary:'早起看中央区与西春寺，中午喝点东西、回酒店取行李。航班少，最终时刻以出票为准。',slots:['清晨｜中央区→西春寺','中午｜素可泰米粉→咖啡→取行李','下午｜去 THS；傍晚飞 BKK'],ids:['sukhothai-mahathat','wat-si-chum','sukhothai-cafe','ths'],segments:[['自行车 / 嘟嘟车','15–20 分'],['自行车 / 嘟嘟车','10–15 分'],['预约车','35–45 分']]},
+  crTransfer:{title:'清迈到清莱，住一晚再看建筑',tag:'核心',area:'跨城后在清莱市区',summary:'如果我们更想看当代宗教建筑，就用清莱替换素可泰，不能两条都走。',slots:['上午｜巴士约 3–3.5 小时','下午｜入住→蓝庙','晚上｜钟楼与夜市'],ids:['blue-temple','clock-tower'],segments:[['Grab','10–20 分']]},
+  crToBkk:{title:'清莱建筑线，晚上飞曼谷',tag:'核心',area:'城南白庙到城北黑屋，必须包车',summary:'白庙和黑屋分在城南北，今天靠包车组织，不临时拼景点。',slots:['08:00｜白庙','11:30｜午餐→黑屋','傍晚｜CEI→曼谷'],ids:['white-temple','baan-dam','cei'],segments:[['包车','45–60 分'],['包车','20–30 分']]},
+  bkkRoyal:{title:'曼谷王城，把最经典的一天走顺',tag:'核心',area:'Rattanakosin 王城与湄南河两岸',summary:'我们 08:30 前到大皇宫。午后坐摆渡船去郑王庙，热或累了就把花市删掉。',slots:['08:30｜大皇宫 / 玉佛寺','11:30｜卧佛寺→午餐和休息','15:00｜过河到郑王庙；有余力再去花市'],ids:['grand-palace','wat-pho','wat-arun','flower-market'],segments:[['步行','12–18 分'],['步行 + 摆渡船','15–25 分'],['摆渡船 + 步行 / Grab','20–35 分']]},
+  bkkOld:{title:'Talat Noi、河岸和唐人街',tag:'核心',area:'华蓬南侧到 Yaowarat，同一片老城步行圈',summary:'下午才出门，在老仓库、修车巷和河岸之间慢慢走到 Yaowarat。我们分着吃，不排十家店。',slots:['下午｜Wat Traimit→Talat Noi','傍晚｜河岸与老街随走随停','晚上｜Yaowarat 每站只点一两样'],ids:['wat-traimit','talat-noi','yaowarat'],segments:[['步行','20–30 分'],['步行','20–35 分']]},
+  bkkArts:{title:'现代曼谷，木屋、当代艺术和公园',tag:'可换',area:'Siam 文化圈，天晴再向东去 Benjakitti',summary:'这是最完整的雨天线。BACC 周一闭馆；天晴又有体力，傍晚再去公园。',slots:['上午｜Jim Thompson House','下午｜BACC→Siam','傍晚｜Benjakitti 或 Mahanakhon'],ids:['jim-thompson','bacc','benjakitti','mahanakhon'],segments:[['步行','8–12 分'],['BTS / MRT / Grab','25–40 分'],['MRT / Grab','20–35 分']]},
+  bkkWeekend:{title:'周末市场半日，再回现代曼谷',tag:'可换',area:'Chatuchak 小圈，下午回 Siam',summary:'只有周末才打开。我们 09:00 到，中午去 Or Tor Kor，14:00 前离开闷热的人群。',slots:['09:00｜Chatuchak 先逛目标区','12:00｜Or Tor Kor 午饭','下午｜BACC / Siam'],ids:['chatuchak','or-tor-kor','bacc'],segments:[['步行','8–12 分'],['MRT','25–35 分']]},
+  departure:{title:'离开曼谷，今天不赌远路',tag:'核心',area:'酒店到机场，没有固定游览圈',summary:'航班时间还没定，默认不跨河也不去远郊。晚班机才在住处附近喝咖啡或散步。',slots:['BKK｜轨道交通高峰另加 20–30 分钟','DMK｜Red Line 或出租车','国际航班｜约提前 3 小时到机场'],ids:[]}
 };
 
 function bangkokDays(dates,{allowWeekend=false,needsOld=true}={}){
   const out=[];let weekendUsed=false,oldUsed=!needsOld,royalUsed=false,artsUsed=false;
-  dates.forEach((d,i)=>{
-    const isWeekend=[0,6].includes(d.getDay());
-    if(allowWeekend&&isWeekend&&!weekendUsed){out.push('bkkWeekend');weekendUsed=true;return}
-    if(!royalUsed){out.push('bkkRoyal');royalUsed=true;return}
-    if(!oldUsed){out.push('bkkOld');oldUsed=true;return}
-    if(d.getDay()!==1&&!artsUsed){out.push('bkkArts');artsUsed=true;return}
-    out.push('bkkOld');
-  });
-  if(out.some((x,i)=>x==='bkkArts'&&dates[i].getDay()===1)){
-    const j=out.findIndex((x,i)=>dates[i].getDay()!==1&&x!=='bkkArts');
-    const i=out.indexOf('bkkArts'); if(j>=0){[out[i],out[j]]=[out[j],out[i]]}
-  }
+  dates.forEach(d=>{const isWeekend=[0,6].includes(d.getDay());if(allowWeekend&&isWeekend&&!weekendUsed){out.push('bkkWeekend');weekendUsed=true;return}if(!royalUsed){out.push('bkkRoyal');royalUsed=true;return}if(!oldUsed){out.push('bkkOld');oldUsed=true;return}if(d.getDay()!==1&&!artsUsed){out.push('bkkArts');artsUsed=true;return}out.push('bkkOld')});
   return out;
 }
-
 function buildKeys(nights,arrival){
   if(nights<=5)return ['arrival','cmOld','cmWestSlow','cmToBkk','bkkRoyal','departure'];
-  if(nights===6){const bdates=[add(arrival,4),add(arrival,5)];return ['arrival','cmOld','cmWestSlow','cmToBkk',...bangkokDays(bdates,{allowWeekend:true,needsOld:false}),'departure']}
-  if(nights===7){const bdates=[add(arrival,5),add(arrival,6)];return ['arrival','cmOld','cmWest','cmSlow','cmToBkk',...bangkokDays(bdates,{allowWeekend:true,needsOld:false}),'departure']}
-  const bdates=[add(arrival,6),add(arrival,7)];
-  return ['arrival','cmOld','cmWest','cmSlow','cmToSukhothai','sukhothaiToBkk',...bangkokDays(bdates,{allowWeekend:false,needsOld:true}),'departure'];
+  if(nights===6){const dates=[add(arrival,4),add(arrival,5)];return ['arrival','cmOld','cmWestSlow','cmToBkk',...bangkokDays(dates,{allowWeekend:true,needsOld:false}),'departure']}
+  if(nights===7){const dates=[add(arrival,5),add(arrival,6)];return ['arrival','cmOld','cmWest','cmSlow','cmToBkk',...bangkokDays(dates,{allowWeekend:true,needsOld:false}),'departure']}
+  const dates=[add(arrival,6),add(arrival,7)];
+  return ['arrival','cmOld','cmWest','cmSlow','cmToSukhothai','sukhothaiToBkk',...bangkokDays(dates,{allowWeekend:false,needsOld:true}),'departure'];
 }
 
-let map,markers=[],activeCity='all';
-function mapIcon(place){const c=typeColors[place.type];const glyph={food:'食',drink:'咖',indoor:'雨',transport:'行'}[place.type]||'•';return L.divIcon({className:'',html:`<div style="width:28px;height:28px;border-radius:50%;background:${c};border:2px solid white;box-shadow:0 3px 10px rgba(0,0,0,.24);display:grid;place-items:center;color:white;font-size:12px;font-weight:900">${glyph}</div>`,iconSize:[28,28],iconAnchor:[14,14],popupAnchor:[0,-14]})}
-function popup(place){const q=encodeURIComponent(`${place.name} Thailand`);const labels={core:'核心',food:'餐饮',drink:'咖啡',indoor:'雨天',transport:'交通',optional:'可选'};return `<div class="popup"><span class="popup-tag">${cityLabels[place.city]} · ${labels[place.type]}</span><h4>${place.name}</h4><p>${place.desc}</p><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${q}">Google Maps 导航 ↗</a></div>`}
+let map,dayMap,markers=[],dayLayers=[],activeCity='all',currentPlan=[],currentArrival,activeDay=0;
+function mapIcon(place,number){const c=typeColors[place.type];const glyph=number||({food:'食',drink:'咖',indoor:'雨',transport:'行'}[place.type]||'•');return L.divIcon({className:'',html:`<div class="map-pin${number?' numbered':''}" style="background:${c}">${glyph}</div>`,iconSize:[number?32:28,number?32:28],iconAnchor:[number?16:14,number?16:14],popupAnchor:[0,-15]})}
+function popup(place){const image=commonsImage(place.imageFile);return `<div class="popup">${image?`<button class="popup-photo" data-open-place="${place.id}" aria-label="先看看 ${place.name} 长什么样"><img src="${image}" alt="${place.name}" loading="lazy"></button>`:''}<span class="popup-tag">${cityLabels[place.city]} · ${typeLabels[place.type]}</span><h4>${place.name}</h4><p>${place.why||place.desc}</p><div class="popup-actions"><button data-open-place="${place.id}">打开完整介绍</button><a target="_blank" rel="noopener" href="${mapsSearch(place)}">地图导航 ↗</a></div></div>`}
+function bindPopupActions(){setTimeout(()=>document.querySelectorAll('[data-open-place]').forEach(el=>{if(!el.dataset.bound){el.dataset.bound='1';el.addEventListener('click',e=>{e.preventDefault();openPlaceDetail(el.dataset.openPlace)})}}),0)}
 function renderMarkers(city='all'){
   markers.forEach(m=>map.removeLayer(m.marker));markers=[];
   const visible=places.filter(x=>city==='all'||x.city===city);
-  visible.forEach(place=>{const marker=L.marker([place.lat,place.lng],{icon:mapIcon(place)}).addTo(map).bindPopup(popup(place));markers.push({id:place.id,city:place.city,marker})});
+  visible.forEach(place=>{const marker=L.marker([place.lat,place.lng],{icon:mapIcon(place)}).addTo(map).bindPopup(popup(place));marker.on('popupopen',bindPopupActions);markers.push({id:place.id,city:place.city,marker})});
   if(visible.length)map.fitBounds(visible.map(x=>[x.lat,x.lng]),{padding:[34,34],maxZoom:city==='all'?6:13});
 }
-function focusPlace(id){const place=p(id);if(!place)return;activeCity=place.city;setActiveChip(activeCity);renderMarkers(activeCity);setTimeout(()=>{const x=markers.find(m=>m.id===id);if(x){map.setView([place.lat,place.lng],14,{animate:true});x.marker.openPopup()}document.querySelector('#map-section').scrollIntoView({behavior:'smooth'})},100)}
-function focusCity(city){activeCity=city;setActiveChip(city);renderMarkers(city);document.querySelector('#map-section').scrollIntoView({behavior:'smooth'})}
+function focusPlace(id){const place=p(id);if(!place||!map)return;activeCity=place.city;setActiveChip(activeCity);renderMarkers(activeCity);setTimeout(()=>{const x=markers.find(m=>m.id===id);if(x){map.setView([place.lat,place.lng],14,{animate:true});x.marker.openPopup()}document.querySelector('#map-section')?.scrollIntoView({behavior:'smooth'})},100)}
+function focusCity(city){activeCity=city;setActiveChip(city);renderMarkers(city);document.querySelector('#map-section')?.scrollIntoView({behavior:'smooth'})}
 function setActiveChip(city){document.querySelectorAll('[data-city]').forEach(x=>x.classList.toggle('active',x.dataset.city===city))}
 
 function renderPlan(){
   const a=localDate(document.querySelector('#arrivalSelect').value),d=localDate(document.querySelector('#departureSelect').value);const nights=Math.round((d-a)/DAY);
   if(nights<5||nights>8){document.querySelector('#planSummary').innerHTML='<span class="summary-chip alert">请选择 5–8 晚范围</span>';return}
-  let keys=buildKeys(nights,a);
-  if(keys.length!==nights+1){keys=keys.slice(0,nights).concat('departure')}
-  const planType=nights<=5?'双城压缩版：清迈生活感 + 曼谷王城':nights===6?'双城标准版：清迈两整天 + 曼谷两整天':nights===7?'推荐慢游版：给大学与宁曼一个下午':'古都开口版：素可泰住一晚后飞曼谷';
-  const alerts=[];if(nights<=5)alerts.push('不加素可泰 / 清莱 / 大城');if(nights===8)alerts.push('PG214 当前约 17:50 起飞，先确认再订住宿');
+  let keys=buildKeys(nights,a);if(keys.length!==nights+1)keys=keys.slice(0,nights).concat('departure');currentPlan=keys;currentArrival=a;activeDay=Math.min(activeDay,keys.length-1);
+  const planType=nights<=5?'双城压缩版，清迈生活感加曼谷王城':nights===6?'双城标准版，清迈两整天加曼谷两整天':nights===7?'我最推荐的慢游版，留一下午给大学与宁曼':'古都开口版，在素可泰住一晚后飞曼谷';
+  const alerts=[];if(nights<=5)alerts.push('不加素可泰、清莱或大城');if(nights===8)alerts.push('素可泰航班少，先确认机票再订住宿');
   document.querySelector('#planSummary').innerHTML=`<span class="summary-chip">${nights} 晚 · ${planType}</span><span class="summary-chip">${zhDate(a)} → ${zhDate(d)}</span><span class="summary-chip">${nights===8?'清迈 4 晚 · 素可泰 1 晚 · 曼谷 3 晚':'清迈慢游 → 飞曼谷'}</span>${alerts.map(x=>`<span class="summary-chip alert">${x}</span>`).join('')}`;
-  document.querySelector('#timeline').innerHTML=keys.map((key,i)=>{const def=dayDefs[key],date=add(a,i);const slots=def.slots.map(s=>{const [label,...rest]=s.split('｜');return `<div class="slot"><b>${label}</b>${rest.join('｜')}</div>`}).join('');const locs=def.ids.map(id=>`<button class="place-link" data-place="${id}">${p(id).name.split(' ')[0]}</button>`).join(' · ');return `<article class="day-card"><div class="day-date"><b>${String(date.getMonth()+1).padStart(2,'0')}.${String(date.getDate()).padStart(2,'0')}</b><span>${week(date)} · D${i}</span></div><div class="day-body"><div class="day-title"><h3>${def.title}</h3><span class="tag ${def.tag==='可换'?'swap':''}">${def.tag}</span></div><p>${def.summary}${locs?`<br><span class="inline-locs">地图：${locs}</span>`:''}</p><div class="slots">${slots}</div></div></article>`}).join('');
-  document.querySelectorAll('[data-place]').forEach(btn=>btn.addEventListener('click',()=>focusPlace(btn.dataset.place)));
-  localStorage.setItem('thaiTripDates',JSON.stringify({arrival:iso(a),departure:iso(d)}));
-  updateForecast(a,d);
+  document.querySelector('#timeline').innerHTML=keys.map((key,i)=>{const def=dayDefs[key],date=add(a,i);const slots=def.slots.map(s=>{const [label,...rest]=s.split('｜');return `<div class="slot"><b>${label}</b>${rest.join('｜')}</div>`}).join('');const locs=def.ids.map(id=>`<button class="place-link" data-detail-place="${id}">${p(id).name.split(' ')[0]}</button>`).join(' · ');return `<article class="day-card"><div class="day-date"><b>${String(date.getMonth()+1).padStart(2,'0')}.${String(date.getDate()).padStart(2,'0')}</b><span>${week(date)} · D${i}</span></div><div class="day-body"><div class="day-title"><h3>${def.title}</h3><span class="tag ${def.tag==='可换'?'swap':''}">${def.tag}</span></div><p>${def.summary}${locs?`<br><span class="inline-locs">地点：${locs}</span>`:''}</p><div class="slots">${slots}</div><button class="day-map-button" data-day-index="${i}">${def.ids.length?'看这一天怎么走':'看这一天为什么不排路线'} →</button></div></article>`}).join('');
+  document.querySelectorAll('[data-detail-place]').forEach(btn=>btn.addEventListener('click',()=>openPlaceDetail(btn.dataset.detailPlace)));
+  document.querySelectorAll('[data-day-index]').forEach(btn=>btn.addEventListener('click',()=>{activeDay=Number(btn.dataset.dayIndex);renderDayMap(activeDay);document.querySelector('#day-map-shell')?.scrollIntoView({behavior:'smooth',block:'start'})}));
+  renderDayTabs();renderDayMap(activeDay);localStorage.setItem('thaiTripDates',JSON.stringify({arrival:iso(a),departure:iso(d)}));updateForecast(a,d);
 }
 
+function renderDayTabs(){
+  const tabs=document.querySelector('#dayTabs');if(!tabs)return;
+  tabs.innerHTML=currentPlan.map((key,i)=>{const date=add(currentArrival,i);return `<button class="day-tab ${i===activeDay?'active':''}" data-day-tab="${i}"><span>D${i}</span>${date.getMonth()+1}.${date.getDate()}</button>`}).join('');
+  tabs.querySelectorAll('[data-day-tab]').forEach(btn=>btn.addEventListener('click',()=>{activeDay=Number(btn.dataset.dayTab);renderDayTabs();renderDayMap(activeDay)}));
+}
+function renderDayMap(index){
+  const key=currentPlan[index],def=dayDefs[key];if(!def||!dayMap)return;activeDay=index;renderDayTabs();
+  document.querySelector('#dayMapTitle').textContent=`D${index} · ${def.title}`;document.querySelector('#dayMapIntro').textContent=def.area;
+  dayLayers.forEach(layer=>dayMap.removeLayer(layer));dayLayers=[];
+  const routePlaces=def.ids.map(p).filter(Boolean);const list=document.querySelector('#dayRouteList');const stats=document.querySelector('#dayRouteStats');
+  if(!routePlaces.length){list.innerHTML='<li class="empty-route">抵达和离开日不固定住处，也就不画一条假路线。等酒店和航班确定后，我们只看当时最稳的接驳。</li>';stats.innerHTML='<span>0 个固定停靠点</span><b>今天不跨区找景点</b>';dayMap.setView(key==='arrival'?[18.79,98.99]:[13.75,100.52],12);return}
+  routePlaces.forEach((place,i)=>{const marker=L.marker([place.lat,place.lng],{icon:mapIcon(place,i+1)}).addTo(dayMap).bindPopup(popup(place));marker.on('popupopen',bindPopupActions);dayLayers.push(marker)});
+  if(routePlaces.length>1){const line=L.polyline(routePlaces.map(x=>[x.lat,x.lng]),{color:'#dd8a2d',weight:3,dashArray:'8 9',opacity:.9}).addTo(dayMap);dayLayers.push(line)}
+  dayMap.fitBounds(routePlaces.map(x=>[x.lat,x.lng]),{padding:[38,38],maxZoom:14});
+  stats.innerHTML=`<span>${routePlaces.length} 个停靠点</span><b>${def.area}</b>`;
+  list.innerHTML=routePlaces.map((place,i)=>{const seg=i<routePlaces.length-1?(def.segments||[])[i]||['按现场选择','时间待定']:null;const next=routePlaces[i+1];return `<li><div class="route-stop"><span>${i+1}</span><button data-detail-place="${place.id}"><b>${place.name}</b><small>${place.desc}</small></button></div>${seg?`<div class="route-leg"><i></i><span>${seg[0]} · ${seg[1]}</span><a href="${mapsRoute(place,next,seg[0].includes('步行')?'walking':'driving')}" target="_blank" rel="noopener">打开这一段导航 ↗</a></div>`:''}</li>`}).join('');
+  list.querySelectorAll('[data-detail-place]').forEach(btn=>btn.addEventListener('click',()=>openPlaceDetail(btn.dataset.detailPlace)));
+}
+
+function sourceMarkup(place){const sources=place.sources||[lp];return sources.map(s=>s.url?`<a href="${s.url}" target="_blank" rel="noopener"><span>${s.kind||'来源'}</span>${s.title} ↗</a>`:`<div><span>书本</span>${s.title}<small>${s.note||''}</small></div>`).join('')}
+function detailMarkup(place,{standalone=false}={}){const image=commonsImage(place.imageFile);return `${image?`<figure class="detail-hero"><img src="${image}" alt="${place.name}"><figcaption>图片来自 Wikimedia Commons · <a href="${commonsPage(place.imageFile)}" target="_blank" rel="noopener">查看原文件与授权</a></figcaption></figure>`:''}<div class="detail-kicker">${cityLabels[place.city]} · ${typeLabels[place.type]}</div><h1>${place.name}</h1><p class="detail-lead">${place.why||place.desc}</p><div class="detail-grid"><section><h2>我们到了先看什么</h2>${place.lookFor?`<ol>${place.lookFor.map(x=>`<li>${x}</li>`).join('')}</ol>`:`<p>${place.desc}</p>`}</section><section><h2>为什么会是现在这样</h2><p>${place.story||'这里还没有写成一段可靠的长介绍。出发前我会再看官方资料，不拿传闻把它补满。'}</p></section><section><h2>放在这一天怎么走</h2><p>${place.together||'它现在是备选点。只有当天路线、天气和体力都合适，我们才把它打开。'}</p></section><section><h2>如果下雨</h2><p>${place.rain||'先看现场雨势和道路。短雨可以等，雷雨、积水或湿滑明显时直接取消。'}</p></section></div>${place.current?.length?`<section class="current-box"><h2>现在能确认的事</h2><ul>${place.current.map(x=>`<li>${x}</li>`).join('')}</ul><p>这些信息核到 2026-08-14，临近出发再点下面的官方页面。</p></section>`:''}<div class="detail-actions"><a class="button primary" href="${mapsSearch(place)}" target="_blank" rel="noopener">从这里开始导航 ↗</a>${standalone?'<a class="button ghost" href="index.html#map-section">回到行程地图</a>':`<a class="button ghost" href="place.html?id=${place.id}">在独立页面打开</a>`}</div><section class="detail-sources"><h2>我参考了什么</h2>${sourceMarkup(place)}</section>`}
+function openPlaceDetail(id){const place=p(id),drawer=document.querySelector('#placeDrawer');if(!place)return;if(!drawer){location.href=`place.html?id=${id}`;return}document.querySelector('#placeDrawerContent').innerHTML=detailMarkup(place);drawer.hidden=false;document.body.classList.add('drawer-open');history.replaceState(null,'',`#place=${id}`);drawer.querySelector('.drawer-close').focus()}
+function closePlaceDetail(){const drawer=document.querySelector('#placeDrawer');if(!drawer)return;drawer.hidden=true;document.body.classList.remove('drawer-open');if(location.hash.startsWith('#place='))history.replaceState(null,'',location.pathname+location.search)}
+
 async function updateForecast(arrival,departure){
-  const status=document.querySelector('#forecastStatus'),detail=document.querySelector('#forecastDetail');
+  const status=document.querySelector('#forecastStatus'),detail=document.querySelector('#forecastDetail');if(!status||!detail)return;
   const now=new Date();now.setHours(12,0,0,0);const days=Math.ceil((arrival-now)/DAY);
-  if(days>16){const unlock=add(arrival,-16);status.textContent=`预计 ${zhDate(unlock)} 进入窗口`;detail.textContent='届时页面会自动读取清迈、素可泰与曼谷的降雨概率；现在先用“上午户外、下午机动”的结构。';return}
-  if(days<-2){status.textContent='行程日期已过';return}
-  status.textContent='正在获取逐日预报…';
-  try{
-    const cities=[['清迈',18.79,98.99],['素可泰',17.01,99.70],['曼谷',13.75,100.52]];
-    const rows=await Promise.all(cities.map(async([name,lat,lng])=>{const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=precipitation_probability_max,precipitation_sum,temperature_2m_max,temperature_2m_min&timezone=Asia%2FBangkok&start_date=${iso(arrival)}&end_date=${iso(departure)}`;const j=await fetch(url).then(r=>{if(!r.ok)throw new Error('forecast');return r.json()});const max=Math.max(...j.daily.precipitation_probability_max.filter(Number.isFinite));const rain=j.daily.precipitation_sum.reduce((x,y)=>x+(y||0),0);return `${name}最高降雨概率 ${max}% / 累计约 ${rain.toFixed(0)}mm`;}));
-    status.textContent='逐日预报已可用';detail.textContent=rows.join('；')+'。仍以 TMD 暴雨警报为更高优先级。';
-  }catch(e){status.textContent='暂时无法读取预报';detail.textContent='请直接打开 Thai Meteorological Department，并在出发前 72 小时复查。'}
+  if(days>16){const unlock=add(arrival,-16);status.textContent=`预计 ${zhDate(unlock)} 进入窗口`;detail.textContent='到时页面会自动读取清迈、素可泰和曼谷的降雨概率。现在先按上午户外、下午机动来排。';return}
+  if(days<-2){status.textContent='行程日期已过';return}status.textContent='正在获取逐日预报…';
+  try{const cities=[['清迈',18.79,98.99],['素可泰',17.01,99.70],['曼谷',13.75,100.52]];const rows=await Promise.all(cities.map(async([name,lat,lng])=>{const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=precipitation_probability_max,precipitation_sum,temperature_2m_max,temperature_2m_min&timezone=Asia%2FBangkok&start_date=${iso(arrival)}&end_date=${iso(departure)}`;const j=await fetch(url).then(r=>{if(!r.ok)throw new Error('forecast');return r.json()});const max=Math.max(...j.daily.precipitation_probability_max.filter(Number.isFinite));const rain=j.daily.precipitation_sum.reduce((x,y)=>x+(y||0),0);return `${name}最高降雨概率 ${max}% / 累计约 ${rain.toFixed(0)}mm`;}));status.textContent='逐日预报已可用';detail.textContent=rows.join('；')+'。如果 TMD 发暴雨警报，我们以警报为准。'}catch(e){status.textContent='暂时无法读取预报';detail.textContent='出发前 72 小时直接看 Thai Meteorological Department。'}
 }
 
 function init(){
-  const arrivalEl=document.querySelector('#arrivalSelect');
-  const departureEl=document.querySelector('#departureSelect');
-  const buildButton=document.querySelector('#buildPlan');
-  const toolbar=document.querySelector('#mapToolbar');
+  if(!document.querySelector('#map'))return;
+  const arrivalEl=document.querySelector('#arrivalSelect'),departureEl=document.querySelector('#departureSelect'),buildButton=document.querySelector('#buildPlan'),toolbar=document.querySelector('#mapToolbar');
   let saved=null;try{saved=JSON.parse(localStorage.getItem('thaiTripDates')||'null')}catch(e){localStorage.removeItem('thaiTripDates')}if(saved){if([...arrivalEl.options].some(x=>x.value===saved.arrival))arrivalEl.value=saved.arrival;if([...departureEl.options].some(x=>x.value===saved.departure))departureEl.value=saved.departure}
   map=L.map('map',{zoomControl:false,scrollWheelZoom:false}).setView([16.7,99.5],6);L.control.zoom({position:'topright'}).addTo(map);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);renderMarkers();
-  toolbar.addEventListener('click',e=>{const b=e.target.closest('[data-city]');if(!b)return;focusCity(b.dataset.city)});
-  document.querySelectorAll('[data-focus-city]').forEach(b=>b.addEventListener('click',()=>focusCity(b.dataset.focusCity)));
-  document.querySelectorAll('[data-focus-id]').forEach(b=>b.addEventListener('click',()=>focusPlace(b.dataset.focusId)));
+  dayMap=L.map('dayMap',{zoomControl:false,scrollWheelZoom:false}).setView([18.79,98.99],12);L.control.zoom({position:'topright'}).addTo(dayMap);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(dayMap);
+  toolbar.addEventListener('click',e=>{const b=e.target.closest('[data-city]');if(b)focusCity(b.dataset.city)});
+  document.querySelectorAll('[data-focus-city]').forEach(b=>b.addEventListener('click',()=>focusCity(b.dataset.focusCity)));document.querySelectorAll('[data-focus-id]').forEach(b=>b.addEventListener('click',()=>focusPlace(b.dataset.focusId)));
+  document.querySelector('#placeDrawer .drawer-backdrop')?.addEventListener('click',closePlaceDetail);document.querySelector('#placeDrawer .drawer-close')?.addEventListener('click',closePlaceDetail);document.addEventListener('keydown',e=>{if(e.key==='Escape')closePlaceDetail()});
   buildButton.addEventListener('click',renderPlan);arrivalEl.addEventListener('change',renderPlan);departureEl.addEventListener('change',renderPlan);renderPlan();
+  const hashMatch=location.hash.match(/^#place=(.+)$/);if(hashMatch)openPlaceDetail(hashMatch[1]);
 }
+
+window.THAILAND_TRIP={places,dayDefs,details,cityLabels,typeLabels,commonsImage,commonsPage,mapsSearch,detailMarkup,p};
 document.addEventListener('DOMContentLoaded',init);
