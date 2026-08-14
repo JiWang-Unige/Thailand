@@ -89,8 +89,14 @@ const details={
   'or-tor-kor':{why:'逛完 Chatuchak，我们不继续在摊位里找午饭，过街来这里坐下、吃水果，把节奏稳住。',story:'这是以农产、熟食和水果见长的市场，环境比大型周末市场更易辨认。',lookFor:['先绕一小圈再决定吃什么','两个人分着试当季水果','价格和份量先问清楚'],together:'只在周末市场模块里出现，午饭后回 Siam。',rain:'主体有顶，过街和接驳时注意积水。',sources:[src('Or Tor Kor · Google Maps 实时信息','https://www.google.com/maps/search/?api=1&query=Or+Tor+Kor+Market+Bangkok','现场复核')]}
 };
 
+details['jok-prince']={why:'如果我们住在 Charoen Krung 一带，或者晚上还想吃一碗热的，就把这里当顺路停靠。它不值得从 Yaowarat 特意往南折返。',story:'Jok Prince 以炭火带来的烟熏感和绵密泰式粥出名。老店搬迁、营业时段与排队状态都可能变化，旧版书上的钟点不能直接照搬。',lookFor:['先看当天是堂食、外带还是需要排队取号','两个人先分一碗，再决定要不要加蛋或内脏','确认回酒店方向，别为了这一站把老城夜线拉长'],together:'它只在 Talat Noi 同方向或住得近时成立。我们的主线仍是旧巷到 Yaowarat。',rain:'大雨时可以坐下吃，但叫车上下客会受 Charoen Krung 路况影响。',sources:[src('Jok Prince · Google Maps 实时信息','https://www.google.com/maps/search/?api=1&query=Jok+Prince+Bangkok','现场复核'),lp]};
+details['sukhothai-cafe']={why:'清晨骑完以后，我们需要冷气、冰饮和一个能慢慢等车的地方。它是休息点，营业状态不稳就换历史公园入口附近的店。',story:'Cafe Thammada 常被旅行者当作历史公园附近的艺术咖啡馆。它不是遗产本体，装潢、菜单和营业安排都可能变化。',lookFor:['先看当天营业和座位，不把行李留在无人照看的位置','两个人补水、简单吃一点，给下午接驳留体力','返程前确认从店到酒店和机场车的时间'],together:'西春寺后回到中央区，吃午饭、喝咖啡、取行李。15:00 左右开始为机场接驳留余量。',rain:'适合等短雨。若暴雨影响道路，先让酒店确认机场车，咖啡可以删。',sources:[src('Cafe Thammada · Google Maps 实时信息','https://www.google.com/maps/search/?api=1&query=Cafe+Thammada+Sukhothai','现场复核')]};
+details['ths']={imageFile:'Sukhothai Airport Passenger Terminal.jpg',why:'这座小机场决定了素可泰能不能成为开口路线。我们从这里飞曼谷，省掉返回清迈或再坐六七小时公路车。',story:'Sukhothai Airport 由 Bangkok Airways 运营，班次少，机场本身也采用低层、开放式的度假建筑语言。真正要紧的是最终航班是否仍在售。',lookFor:['订票时确认机场代码 THS 和落地机场 BKK','让酒店或车行写明接人时间，不靠路边临时叫车','进机场后再看柜台与安检时间，小机场也不能按最后一分钟到'],together:'上午骑行后回酒店休息。我们预留 35–45 分钟车程，并在航班要求的值机截止前到达。',rain:'大雨时更早离开历史公园。航班变更以航空公司通知为准。',current:['班次与票价波动大，先出票再锁素可泰不可退住宿'],sources:[src('Bangkok Airways · Sukhothai to Bangkok','https://www.bangkokair.com/flightdeals/view/sukhothai-bangkok','航空公司')]};
+details['mahanakhon']={why:'只有天空够清、我们也还想看高处时才去。低云和雷雨会把高价观景台变成一段没有远景的室内电梯。',story:'Mahanakhon 的像素化退台让它成为曼谷当代天际线标志，顶部观景设施与天气关系很大。票种和入场时段经常变化。',lookFor:['买票前先看实时云层和雷达','从高处辨认湄南河、Silom 与远处王城方向','玻璃步道按现场鞋套、拍摄和雷雨关闭要求执行'],together:'它只替代公园的傍晚，不和 Benjakitti 同时硬塞。',rain:'雷雨、低云或能见度差时整段取消，不提前买难退票。',sources:[src('King Power Mahanakhon · 官方网站','https://kingpowermahanakhon.co.th/') ]};
 details['wat-phan-tao'].imageFile='Chiang Mai - Wat Phan Tao - 0001.jpg';
 details['monks-trail'].imageFile='Doi Suthep Monk Trail 1.jpg';
+details['one-nimman'].imageFile='One Nimman.jpg';
+details['benjakitti'].imageFile='Benjakitti Forest Park (I).jpg';
 Object.entries(details).forEach(([id,extra])=>Object.assign(places.find(x=>x.id===id)||{},extra));
 const p=id=>places.find(x=>x.id===id);
 const localDate=s=>new Date(`${s}T12:00:00`);
