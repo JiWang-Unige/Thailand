@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f3d36">
+  <meta name="description" content="2026 年清迈—清莱—曼谷可伸缩行程、天气预案、美食与交互地图。">
+  <title>泰北到曼谷 · 2026 动态旅行地图</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="返回顶部"><span>泰</span> Thailand 2026</a>
+    <nav aria-label="页面导航">
+      <a href="#planner">行程</a><a href="#map-section">地图</a><a href="#weather">天气</a><a href="#food">吃什么</a><a href="#transport">交通</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">CHIANG MAI · CHIANG RAI · BANGKOK</p>
+        <h1>一条能随日期与雨势变化的泰国北—中部路线</h1>
+        <p class="lead">以《Lonely Planet Thailand》的重点选择为骨架，用 2026 年官方交通、开放时间和餐厅信息校准。先保住城市精华，再按天数插入清莱、茵他侬山、周末市场或阿瑜陀耶。</p>
+        <div class="hero-actions"><a class="button primary" href="#planner">生成我的日期版</a><a class="button ghost" href="#map-section">先看全局地图</a></div>
+        <div class="fact-row">
+          <div><b>推荐长度</b><span>7 晚</span></div><div><b>城市转换</b><span>飞机优先</span></div><div><b>季节判断</b><span>雨季末段</span></div><div><b>租车结论</b><span>城市内不租</span></div>
+        </div>
+      </div>
+      <div class="photo-grid" aria-label="核心景点照片">
+        <figure class="photo photo-main"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wat_Chedi_Luang%2C_Buddhist_temple%2C_Chiang_Mai%2C_Thailand.jpg?width=1200" alt="清迈契迪龙寺" loading="eager"><figcaption>清迈 · 契迪龙寺</figcaption></figure>
+        <figure class="photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Grand_Palace_Bangkok.jpg?width=900" alt="曼谷大皇宫" loading="lazy"><figcaption>曼谷 · 大皇宫</figcaption></figure>
+        <figure class="photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wat_Arun_2017_in_Bangkok.jpg?width=900" alt="曼谷郑王庙" loading="lazy"><figcaption>曼谷 · 郑王庙</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="decision-strip">
+      <div><span class="decision-icon">✓</span><p><b>核心主张</b> 5–6 晚不去清莱；8 晚才走“清迈→清莱→曼谷”开口路线。</p></div>
+      <div><span class="decision-icon warn">!</span><p><b>天气约束</b> 9 月末仍可能有强阵雨与积水，山区项目必须允许前一晚取消。</p></div>
+    </section>
+
+    <section id="planner" class="section planner-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">DATE-AWARE PLANNER</p><h2>输入日期，得到可执行版本</h2></div>
+        <p>抵达和离开时间尚未确定，所以把抵达日和离开日都按“低风险半天”处理。若航班在白天，可在现场把邻近模块补回。</p>
+      </div>
+      <div class="planner-panel">
+        <label>抵达清迈（晚上）<select id="arrivalSelect"><option value="2026-09-28">9 月 28 日 · 周一</option><option value="2026-09-29" selected>9 月 29 日 · 周二</option></select></label>
+        <span class="arrow" aria-hidden="true">→</span>
+        <label>离开曼谷<select id="departureSelect"><option value="2026-10-04">10 月 4 日 · 周日</option><option value="2026-10-05">10 月 5 日 · 周一</option><option value="2026-10-06" selected>10 月 6 日 · 周二</option></select></label>
+        <button id="buildPlan" class="button primary" type="button">更新路线</button>
+      </div>
+      <div id="planSummary" class="plan-summary" aria-live="polite"></div>
+      <div id="timeline" class="timeline"></div>
+      <p class="microcopy">“核心”是第一次去最值得保留的体验；“可换”表示可被下雨、疲劳或航班时间覆盖。点击日程中的地点可在地图定位。</p>
+    </section>
+
+    <section id="map-section" class="section map-section">
+      <div class="section-heading compact">
+        <div><p class="eyebrow">INTERACTIVE MAP</p><h2>先理解地理，再决定删什么</h2></div>
+        <p>清莱在清迈东北约 180 公里；茵他侬山在西南。二者不是同一方向，不应在一个额外日里同时安排。</p>
+      </div>
+      <div class="map-toolbar" id="mapToolbar" role="group" aria-label="地图筛选">
+        <button class="chip active" data-city="all">全部</button><button class="chip" data-city="chiangmai">清迈</button><button class="chip" data-city="chiangrai">清莱</button><button class="chip" data-city="bangkok">曼谷</button><button class="chip" data-city="ayutthaya">阿瑜陀耶</button>
+      </div>
+      <div id="map" aria-label="泰国行程交互地图"></div>
+      <div class="map-legend"><span><i class="dot core"></i>核心</span><span><i class="dot optional"></i>可选模块</span><span><i class="dot food"></i>餐饮</span><span><i class="dot indoor"></i>雨天室内</span></div>
+    </section>
+
+    <section class="section modules-section">
+      <div class="section-heading"><div><p class="eyebrow">SWAPPABLE MODULES</p><h2>多出来的一天，应该加在哪里</h2></div><p>按体验差异而非“景点数量”排序。你的日期里山林很绿，但能见度和步道开放状态不稳定。</p></div>
+      <div class="module-grid">
+        <article class="module recommended"><span class="module-rank">8 晚首选</span><h3>清莱住一晚</h3><p>清迈巴士约 3–3.5 小时，次日看白庙、蓝庙与黑屋，再由 CEI 直飞曼谷。视觉差异最大，也没有返回清迈的回头路。</p><ul><li>适合：第一次看泰北、喜欢建筑与摄影</li><li>风险：山路雨势、寺庙分散，需包车半日</li></ul><button class="text-button" data-focus-city="chiangrai">在地图查看 →</button></article>
+        <article class="module"><span class="module-rank">7 晚可选</span><h3>茵他侬山雨季绿意</h3><p>瀑布与稻田在雨季更有水量，云雾也更有气氛；但 Kew Mae Pan 通常 6–10 月关闭，不能把经典山脊徒步作为本次卖点。</p><ul><li>适合：接受雾、轻徒步和瀑布</li><li>风险：低云、强雨、山路与临时关闭</li></ul><button class="text-button" data-focus-id="doi-inthanon">在地图查看 →</button></article>
+        <article class="module"><span class="module-rank">曼谷加一天</span><h3>阿瑜陀耶历史公园</h3><p>早班火车或包车往返，现场租自行车/嘟嘟车串联遗址。若你已经在清迈看了大量寺庙，可把它排在清莱之后，而非无条件必去。</p><ul><li>适合：历史、遗址、广角摄影</li><li>风险：无遮阴、雨后积水与暴晒交替</li></ul><button class="text-button" data-focus-city="ayutthaya">在地图查看 →</button></article>
+        <article class="module"><span class="module-rank">半天模块</span><h3>曼谷周末市场</h3><p>2026 年 10 月 3–4 日恰逢周末。若这两天已经在曼谷，可用 09:00–12:00 逛 Chatuchak，再转 Or Tor Kor 吃午饭；不要为它牺牲大皇宫主线。</p><ul><li>适合：设计小物、古着、街头观察</li><li>风险：拥挤、闷热、阵雨后通道湿滑</li></ul><button class="text-button" data-focus-id="chatuchak">在地图查看 →</button></article>
+      </div>
+    </section>
+
+    <section id="weather" class="section weather-section">
+      <div class="section-heading"><div><p class="eyebrow">MONSOON LOGIC</p><h2>雨季不是不能去，但要换一种排法</h2></div><p>现在距离行程仍超过可靠逐日预报窗口。页面会在出发前 16 天自动尝试读取逐日预报；此前只显示气候基线和决策规则。</p></div>
+      <div class="climate-grid">
+        <article><span>清迈 · 9 月</span><b>约 23–32°C</b><p>WMO/TMD 气候资料显示 9 月平均雨量约 200 mm。常见模式是午后或晚间阵雨，山区降雨可更强。</p></article>
+        <article><span>曼谷 · 10 月</span><b>约 24–32°C</b><p>ICAO/TMD 气候资料给出的 10 月平均雨量约 242 mm。城市热、湿、雨急，MRT/BTS 沿线安排价值很高。</p></article>
+        <article class="live-weather"><span>逐日预报</span><b id="forecastStatus">尚未进入 16 天窗口</b><p id="forecastDetail">预计 9 月中旬后再看逐日预报；出发前 72 小时重点看 TMD 暴雨警报与热带气旋路径。</p></article>
+      </div>
+      <div class="rain-matrix">
+        <div class="rain-row head"><span>现场情况</span><span>清迈</span><span>曼谷</span><span>立刻怎么改</span></div>
+        <div class="rain-row"><b>短时阵雨</b><span>老城寺庙继续，市场/咖啡避雨</span><span>河船保留，备好 MRT/Grab</span><span>户外提前到上午；17:00 后留弹性</span></div>
+        <div class="rain-row"><b>持续中雨</b><span>Lanna Folklife Museum、烹饪课、SPA</span><span>Jim Thompson、BACC、Siam 商圈</span><span>取消 Monk’s Trail，寺庙改包车</span></div>
+        <div class="rain-row"><b>暴雨/预警</b><span>取消山区与瀑布，远离河岸低洼区</span><span>不用运河船，轨道交通+室内组合</span><span>不追行程；检查 TMD、航空和酒店通知</span></div>
+      </div>
+    </section>
+
+    <section id="food" class="section food-section">
+      <div class="section-heading"><div><p class="eyebrow">FOOD BY AREA</p><h2>让餐厅顺路，而不是让一天围着名店转</h2></div><p>书中的老牌选择与 2026 Michelin Guide 交叉筛选。营业日、排队与临时休息仍应在当天复查。</p></div>
+      <div class="food-grid">
+        <article><div class="food-top"><span>清迈 · 老城</span><b>฿</b></div><h3>SP Chicken</h3><p>LP 重点选择。烤鸡、青木瓜沙拉、糯米饭，适合在 Wat Phra Singh 后快速午餐。</p><a href="https://www.google.com/maps/search/?api=1&query=SP+Chicken+Chiang+Mai" target="_blank" rel="noopener">地图</a></article>
+        <article><div class="food-top"><span>清迈 · Chang Phueak</span><b>฿</b></div><h3>Khao Soi Mae Sai</h3><p>2026 Michelin Bib Gourmand。咖喱面与 nam ngiao 都值得点，午市为主，建议早到。</p><a href="https://guide.michelin.com/sg/en/chiang-mai-region/chiang-mai/restaurant/khao-soi-mae-sai" target="_blank" rel="noopener">Michelin</a></article>
+        <article><div class="food-top"><span>清迈 · 北城</span><b>฿฿</b></div><h3>Huen Muan Jai</h3><p>更完整的兰纳菜体验。适合两人共享 sai ua、nam prik ong、年轻菠萝蜜汤等，而不是只吃咖喱面。</p><a href="https://www.google.com/maps/search/?api=1&query=Huen+Muan+Jai+Chiang+Mai" target="_blank" rel="noopener">地图</a></article>
+        <article><div class="food-top"><span>清迈 · 河东</span><b>฿</b></div><h3>Khao Soi Lam Duan</h3><p>LP 重点选择，Warorot Market 以北的传统咖喱面。适合市场日午餐，不需专程跨城。</p><a href="https://www.google.com/maps/search/?api=1&query=Khao+Soi+Lam+Duana+Faham+Chiang+Mai" target="_blank" rel="noopener">地图</a></article>
+        <article><div class="food-top"><span>曼谷 · Dusit</span><b>฿฿</b></div><h3>Krua Apsorn</h3><p>LP 与 2026 Michelin Bib Gourmand 同时推荐。蟹肉咖喱粉炒蛋、黄咖喱与蔬菜菜式，适合大皇宫线之后打车前往。</p><a href="https://guide.michelin.com/us/en/bangkok-region/bangkok/restaurants/bib-gourmand" target="_blank" rel="noopener">Michelin</a></article>
+        <article><div class="food-top"><span>曼谷 · Chinatown</span><b>฿</b></div><h3>Nai Ek Roll Noodles</h3><p>胡椒味粿汁、脆皮烧肉与内脏。排队快、出餐快，适合作为 Yaowarat 夜间小吃的一站。</p><a href="https://www.google.com/maps/search/?api=1&query=Nai+Ek+Roll+Noodles+Bangkok" target="_blank" rel="noopener">地图</a></article>
+        <article><div class="food-top"><span>曼谷 · Charoen Krung</span><b>฿</b></div><h3>Jok Prince</h3><p>烟熏感明显的泰式粥，适合 Talat Noi 线早晚餐。旧版资料里的营业时间不要直接照搬，先看当天状态。</p><a href="https://www.google.com/maps/search/?api=1&query=Jok+Prince+Bangkok" target="_blank" rel="noopener">地图</a></article>
+        <article><div class="food-top"><span>曼谷 · Chatuchak</span><b>฿–฿฿</b></div><h3>Or Tor Kor Market</h3><p>比在 Chatuchak 随机吃更稳定，水果、熟食、甜品集中；周末市场模块的自然午餐落点。</p><a href="https://www.google.com/maps/search/?api=1&query=Or+Tor+Kor+Market+Bangkok" target="_blank" rel="noopener">地图</a></article>
+      </div>
+      <div class="dish-strip"><b>本次至少吃到</b><span>khao soi 咖喱面</span><span>sai ua 北泰香肠</span><span>nam prik ong 番茄猪肉蘸酱</span><span>guay jub 胡椒粿汁</span><span>mango sticky rice 芒果糯米饭</span></div>
+    </section>
+
+    <section id="transport" class="section transport-section">
+      <div class="section-heading"><div><p class="eyebrow">MOVING BETWEEN CITIES</p><h2>清迈到曼谷：飞机确实最省时间</h2></div><p>以下价格是规划区间，不是实时票价。国庆客流与托运行李会放大机票差异，确定日期后应单独比价。</p></div>
+      <div class="compare-table">
+        <div class="compare-row head"><span>方式</span><span>门到门</span><span>规划价/人</span><span>体验与结论</span></div>
+        <div class="compare-row best"><b>飞机 CNX→BKK/DMK</b><span>约 4–5 小时</span><span>฿800–2,500+</span><span><em>首选</em> 航程约 1 小时多；选机场要看曼谷酒店和国际离境机场</span></div>
+        <div class="compare-row"><b>夜卧铺</b><span>约 12–14 小时</span><span>约 ฿900–2,400</span><span>省一晚酒店、有旅行感，但睡眠与准点风险不如飞机；只在你明确想体验时选</span></div>
+        <div class="compare-row"><b>长途巴士</b><span>约 10–12 小时</span><span>约 ฿650–1,100</span><span>价格低但时间成本最大，本次短行程不推荐</span></div>
+      </div>
+      <div class="transport-grid">
+        <article><h3>清迈市内</h3><p><b>主力：</b>Grab/Bolt + 红色 songthaew。老城步行，去双龙寺包红车或跟半日小团。晚间抵达从机场柜台出租车最省心。</p><small>红车是共享交通，无安全带；上车前确认目的地与价格。</small></article>
+        <article><h3>曼谷市内</h3><p><b>主力：</b>MRT/BTS + Chao Phraya Express Boat + Grab。大皇宫区域靠 MRT Sanam Chai 与短程步行，Siam/Chatuchak 优先轨道交通。</p><small>BTS/MRT 约 06:00–24:00；不同系统票卡并未完全一体化。</small></article>
+        <article><h3>机场选择</h3><p><b>BKK：</b>Airport Rail Link 到 Phaya Thai/Makkasan；国际航线衔接通常更方便。<br><b>DMK：</b>廉航多，可坐 SRT Red Line 或出租车。</p><small>国内飞抵机场与最终国际离境机场不必相同，但若同日转机就尽量选同一机场。</small></article>
+        <article class="verdict"><h3>要不要租车/摩托</h3><p><b>城市内都不租。</b>雨季、左侧行驶、停车和曼谷拥堵会抵消自由度。茵他侬山与清莱外围优先包车；只有持对应摩托驾照+IDP、且有山路雨骑经验时才考虑摩托。</p><small>普通汽车驾照不等于合法驾驶摩托车；保险也可能拒赔。</small></article>
+      </div>
+    </section>
+
+    <section class="section practical-section">
+      <div class="section-heading"><div><p class="eyebrow">BEFORE YOU GO</p><h2>住宿区域、预约与出发前观看</h2></div></div>
+      <div class="practical-grid">
+        <article><h3>住哪里最顺</h3><p><b>清迈：</b>Tha Phae Gate—Old City 东侧，兼顾步行、夜市与叫车。<br><b>曼谷：</b>Silom/Sathon 的 MRT+BTS 交汇带，或 Wat Mangkon 附近；短行程不建议频繁换酒店。</p></article>
+        <article><h3>需要提前锁定</h3><p>先锁城际机票和住宿；再按天气订清莱包车/茵他侬山。大皇宫普通票通常现场可买，但出发前检查王室活动导致的临时开放变化。</p></article>
+        <article><h3>纪录片/节目</h3><p><b>首看：</b>Netflix《Street Food: Asia》Bangkok（30 分钟）。<br><b>泰北气质：</b>Anthony Bourdain《Parts Unknown》Thailand/Chiang Mai。<br><b>城市夜生活：</b>Netflix《Midnight Asia》Bangkok。</p></article>
+        <article><h3>寺庙礼仪</h3><p>肩膀与膝盖遮盖；入殿脱鞋；脚底不要朝向佛像或僧侣。女性避免直接触碰僧侣。雨披比长伞更适合人群与台阶。</p></article>
+      </div>
+    </section>
+
+    <section class="section sources-section">
+      <h2>依据与更新边界</h2>
+      <p>路线骨架来自用户提供的《Lonely Planet Thailand》（ISBN 9781838690090）中 Bangkok & Around、Northern Thailand、Chiang Mai Province、Itineraries、Eat & Drink、Transport 等章节；未转载书中图片或长段文字。书中地点若仍适合路线则保留，但开放时间、票价与餐饮状态以 2026 年在线来源覆盖。</p>
+      <div class="source-links">
+        <a href="https://www.royalgrandpalace.th/en/schedules" target="_blank" rel="noopener">Grand Palace 官方日历</a>
+        <a href="https://www.tmd.go.th/en/" target="_blank" rel="noopener">Thai Meteorological Department</a>
+        <a href="https://www.railway.co.th/home/Index" target="_blank" rel="noopener">State Railway of Thailand</a>
+        <a href="https://metro.bemplc.co.th/MRT-System-Map?lang=en" target="_blank" rel="noopener">Bangkok MRT</a>
+        <a href="https://www.bts.co.th/eng/" target="_blank" rel="noopener">BTS Skytrain</a>
+        <a href="https://www.chaophrayaexpressboat.com/chaophrayaexpressboat?lang=en" target="_blank" rel="noopener">Chao Phraya Express Boat</a>
+        <a href="https://www.bacc.or.th/en/contact" target="_blank" rel="noopener">BACC</a>
+        <a href="https://guide.michelin.com/us/en/chiang-mai-region/chiang-mai/restaurants" target="_blank" rel="noopener">Michelin Chiang Mai 2026</a>
+      </div>
+      <details><summary>照片署名（Wikimedia Commons）</summary><p>Wat Chedi Luang：Vyacheslav Argenberg；Grand Palace：D. Alyoshin；Wat Arun：Jakub Hałun；其余模块照片与许可均链接至各自 Wikimedia Commons 文件页。</p></details>
+      <p class="updated">资料核验：2026-08-14 · 逐日天气、航班价格、列车余票和餐厅临时休息需临近出发再次确认。</p>
+    </section>
+  </main>
+
+  <footer><p>Thailand 2026 · reference itinerary, not a rigid script</p><a href="#top">回到顶部 ↑</a></footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
