@@ -21,8 +21,8 @@ python3 -m http.server 8000
 
 ## Deployment
 
-站点通过 `.github/workflows/pages.yml` 发布到 GitHub Pages，不需要构建步骤。
+站点从 `main` 分支根目录直接发布，不需要构建步骤。
 
-仓库首次发布时，在 **Settings → Pages → Build and deployment → Source** 选择
-**GitHub Actions**，然后到 **Actions** 手动运行一次
-**Deploy Thailand trip map to Pages**。之后每次推送 `main` 都会自动更新网页。
+仓库首次发布时，在 **Settings → Pages → Build and deployment** 中选择
+**Deploy from a branch**，分支设为 **main**、目录设为 **/(root)**，然后保存。
+此后每次推送 `main` 都会自动更新网页。
