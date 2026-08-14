@@ -8,13 +8,13 @@
   <title>清迈·素可泰·曼谷｜2026 双人动态旅行地图</title>
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="styles.css?v=20260814b">
+  <link rel="stylesheet" href="styles.css?v=20260814c">
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="返回顶部"><span>泰</span> Thailand 2026</a>
     <nav aria-label="页面导航">
-      <a href="#planner">行程</a><a href="#map-section">地图</a><a href="#weather">天气</a><a href="#food">吃什么</a><a href="#transport">交通</a>
+      <a href="#planner">行程</a><a href="#day-map-shell">每天怎么走</a><a href="#map-section">全部地点</a><a href="#weather">天气</a><a href="#food">吃什么</a>
     </nav>
   </header>
 
@@ -22,9 +22,9 @@
     <section class="hero">
       <div class="hero-copy">
         <p class="eyebrow">CHIANG MAI · SUKHOTHAI · BANGKOK</p>
-        <h1>不赶着看完泰国，把几种完全不同的日子留在一起</h1>
-        <p class="lead">清迈留给山脚、咖啡和夜晚，素可泰留给骑行与落日，曼谷留给河流、街区和热闹。Lonely Planet 帮我们挑第一次值得看的地方，近期游记帮我们判断哪里值得真正停下来。</p>
-        <div class="hero-actions"><a class="button primary" href="#planner">生成我的日期版</a><a class="button ghost" href="#map-section">先看全局地图</a></div>
+        <h1>我不想赶着看完泰国，想和你留下几种不一样的日子</h1>
+        <p class="lead">清迈留给山脚、咖啡和夜晚，素可泰等傍晚再骑进去，曼谷从河流和旧街区一路走到热闹里。Lonely Planet 帮我挑第一次值得看的地方，官网负责现在还能不能去，游记只帮我们判断要不要慢下来。</p>
+        <div class="hero-actions"><a class="button primary" href="#planner">按我们的日期排一版</a><a class="button ghost" href="#day-map-shell">先看每天在哪一圈</a></div>
         <div class="fact-row">
           <div><b>推荐长度</b><span>7–8 晚</span></div><div><b>最慢的一天</b><span>大学 + 宁曼</span></div><div><b>第三座城</b><span>素可泰住一晚</span></div><div><b>租车结论</b><span>城市内不租</span></div>
         </div>
@@ -60,18 +60,37 @@
       </div>
       <div id="planSummary" class="plan-summary" aria-live="polite"></div>
       <div id="timeline" class="timeline"></div>
-      <p class="microcopy">“核心”是我们想一起留下的体验；“可换”可以被下雨、疲劳或临时起意覆盖。点日程里的地点，地图会直接带我们过去。</p>
+      <p class="microcopy">“核心”是我想和你一起留下的体验，“可换”随时可以被下雨、疲劳或临时起意覆盖。地点名字会打开完整介绍，每张日程卡也能跳到当天地图。</p>
+    </section>
+
+    <section id="day-map-shell" class="section day-map-section">
+      <div class="section-heading compact">
+        <div><p class="eyebrow">DAY BY DAY MAP</p><h2>选好路线以后，再看每天在哪一圈</h2></div>
+        <p>我把每天单独拆开。编号是访问顺序，旁边写每一段怎么走。这样不用盯着整张泰国地图猜距离。</p>
+      </div>
+      <div id="dayTabs" class="day-tabs" aria-label="选择某一天"></div>
+      <div class="day-map-grid">
+        <div class="day-map-canvas-wrap">
+          <div class="day-map-heading"><span>当天活动圈</span><h3 id="dayMapTitle"></h3><p id="dayMapIntro"></p></div>
+          <div id="dayMap" aria-label="当天路线地图"></div>
+        </div>
+        <aside class="day-route-panel">
+          <div id="dayRouteStats" class="day-route-stats"></div>
+          <ol id="dayRouteList" class="day-route-list"></ol>
+          <p class="route-disclaimer">地图上的虚线只表示我们按什么顺序去，不代表真实道路。每一段请用旁边的导航打开实时路线，雨天和堵车时再改。</p>
+        </aside>
+      </div>
     </section>
 
     <section id="map-section" class="section map-section">
       <div class="section-heading compact">
-        <div><p class="eyebrow">INTERACTIVE MAP</p><h2>先看清距离，再决定要不要多一座城</h2></div>
-        <p>素可泰在清迈以南，巴士约 5.5 小时；清莱在东北，大城则靠近曼谷。它们不是可以随手叠加的三个“顺路点”。</p>
+        <div><p class="eyebrow">ALL PLACES</p><h2>这里看全局，也先看看每个地方长什么样</h2></div>
+        <p>点地图上的圆点会先出现照片和一句判断，再打开完整地点页。素可泰、清莱和大城分在不同方向，不能把它们当成三个顺路点。</p>
       </div>
       <div class="map-toolbar" id="mapToolbar" role="group" aria-label="地图筛选">
         <button class="chip active" data-city="all">全部</button><button class="chip" data-city="chiangmai">清迈</button><button class="chip" data-city="sukhothai">素可泰</button><button class="chip" data-city="bangkok">曼谷</button><button class="chip" data-city="ayutthaya">大城</button><button class="chip" data-city="chiangrai">清莱备选</button>
       </div>
-      <div id="map" aria-label="泰国行程交互地图"></div>
+      <div id="map" aria-label="泰国行程全部地点地图"></div>
       <div class="map-legend"><span><i class="dot core"></i>核心</span><span><i class="dot optional"></i>可选模块</span><span><i class="dot food"></i>餐饮</span><span><i class="dot drink"></i>咖啡</span><span><i class="dot indoor"></i>雨天室内</span><span><i class="dot transport"></i>交通节点</span></div>
     </section>
 
@@ -185,9 +204,17 @@
     </section>
   </main>
 
-  <footer><p>这是一条可以一起改主意的路线，不是一张必须完成的清单。</p><a href="#top">回到顶部 ↑</a></footer>
+  <aside id="placeDrawer" class="place-drawer" hidden aria-label="地点完整介绍">
+    <button class="drawer-backdrop" aria-label="关闭地点介绍"></button>
+    <div class="drawer-panel" role="dialog" aria-modal="true">
+      <button class="drawer-close" type="button" aria-label="关闭">×</button>
+      <div id="placeDrawerContent" class="place-detail"></div>
+    </div>
+  </aside>
+
+  <footer><p>这是一条我们可以一起改主意的路线，不是一张必须完成的清单。</p><a href="#top">回到顶部 ↑</a></footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="app.js?v=20260814b"></script>
+  <script src="app.js?v=20260814c"></script>
 </body>
 </html>
